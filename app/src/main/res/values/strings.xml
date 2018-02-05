@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GetBin</string>
+    <string name="title_activity_account">AccountActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_email">Verify Email</string>
+
+    <string name="facebook_app_id">192918277961464</string>
+    <string name="fb_login_protocol_scheme">fb192918277961464</string>
+
+</resources>

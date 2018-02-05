@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_background"
+    tools:context="com.example.ashutoshchaubey.getbin.MainActivity">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_text_email_id_sign_in"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/edit_text_email_id_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Enter your email address"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/edit_text_password_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/edit_text_email_id_sign_in"
+        android:layout_below="@+id/edit_text_email_id_sign_in"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="Enter your password"/>
+
+    <EditText
+        android:id="@+id/edit_text_cnfrm_password_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/edit_text_password_sign_in"
+        android:layout_below="@+id/edit_text_password_sign_in"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="Confirm password"/>
+
+    <Button
+        android:id="@+id/button_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_cnfrm_password_sign_in"
+        android:layout_centerHorizontal="true"
+        android:text="SignIn"
+        android:textAllCaps="false"/>
+
+</RelativeLayout>
