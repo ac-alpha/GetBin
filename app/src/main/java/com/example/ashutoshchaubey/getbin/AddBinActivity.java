@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,9 +34,10 @@ import java.util.Locale;
 public class AddBinActivity extends AppCompatActivity {
 
     private static final int CHOOSE_CAMERA_RESULT = 1;
-    Button mCaptureImageButton, mShareLocationButton;
-    ImageView mCapturedImage, mImageCaptured, mLocationShared;
+    Button mCaptureImageButton;
+    ImageView mCapturedImage, mImageCaptured;
     FloatingActionButton mFabDone;
+    ProgressBar mProgressBar;
     File file;
     Uri tempuri;
     FirebaseDatabase mFirebaseDatabase;
@@ -56,14 +58,12 @@ public class AddBinActivity extends AppCompatActivity {
         mPhotoStorageReference=mFirebaseStorage.getReference().child("bin_photos");
 
         mCaptureImageButton=(Button)findViewById(R.id.button_capture);
-        mShareLocationButton=(Button)findViewById(R.id.button_add_location);
         mCapturedImage=(ImageView)findViewById(R.id.imageViewCapturedImage);
         mImageCaptured=(ImageView)findViewById(R.id.image_captured);
-        mLocationShared=(ImageView)findViewById(R.id.location_added);
         mFabDone=(FloatingActionButton)findViewById(R.id.fab_all_fields_done);
+        mProgressBar=(ProgressBar)findViewById(R.id.progres_bar_add_bin);
 
         mImageCaptured.setVisibility(View.INVISIBLE);
-        mLocationShared.setVisibility(View.INVISIBLE);
         mCapturedImage.setVisibility(View.INVISIBLE);
         mFabDone.setVisibility(View.GONE);
 
@@ -106,8 +106,10 @@ public class AddBinActivity extends AppCompatActivity {
         mFabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                startActivity(new Intent(AddBinActivity.this, AccountActivity.class));
+                Intent intent = new Intent(AddBinActivity.this, AccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
 
             }
         });
@@ -118,8 +120,8 @@ public class AddBinActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==CHOOSE_CAMERA_RESULT && resultCode==RESULT_OK){
             if(file.exists()){
+                mProgressBar.setVisibility(View.VISIBLE);
                 mImageCaptured.setVisibility(View.VISIBLE);
-                mLocationShared.setVisibility(View.VISIBLE);
                 mCapturedImage.setVisibility(View.VISIBLE);
                 mCapturedImage.setImageURI(tempuri);
                 Toast.makeText(this,"The image was saved at "+file.getAbsolutePath(),Toast.LENGTH_LONG).show();
@@ -128,9 +130,10 @@ public class AddBinActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        BinInfo newBin = new BinInfo(lat,lang,downloadUrl.toString(),"true");
+                        BinInfo newBin = new BinInfo(lat,lang,downloadUrl.toString(),"0","0","true");
                         mDatabaseReference.push().setValue(newBin);
                         mFabDone.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.INVISIBLE);
                     }
                 });
             }

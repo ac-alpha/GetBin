@@ -32,31 +32,11 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/button_add_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/mybutton"
-            android:text="Share Location" />
-
-        <ImageView
-            android:id="@+id/location_added"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="4dp"
-            android:elevation="2dp"
-            android:src="@drawable/ic_done_black" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:layout_weight="1">
+
+
 
         <ImageView
             android:id="@+id/imageViewCapturedImage"
@@ -64,7 +44,16 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher_background"
+            />
+
+        <ProgressBar
+            android:id="@+id/progres_bar_add_bin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_all_fields_done"

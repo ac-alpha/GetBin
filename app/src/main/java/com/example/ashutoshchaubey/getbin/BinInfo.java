@@ -9,16 +9,20 @@ public class BinInfo {
     public String latitude;
     public String longitude;
     public String imageUrl;
+    public String upVotes;
+    public String downVotes;
     public String isVerified;
 
     public BinInfo(){}
 
-    public BinInfo(String latitude,String longitude, String imageUrl, String isVerified){
+    public BinInfo(String latitude,String longitude, String imageUrl, String upVotes, String downVotes, String isVerified){
 
         this.imageUrl=imageUrl;
         this.latitude=latitude;
-        this.isVerified=isVerified;
+        this.upVotes=upVotes;
+        this.downVotes=downVotes;
         this.longitude=longitude;
+        this.isVerified=isVerified;
 
     }
 
@@ -53,5 +57,21 @@ public class BinInfo {
 
     public String getIsVerified() {
         return isVerified;
+    }
+
+    public String getDownVotes() {
+        return downVotes;
+    }
+
+    public String getUpVotes() {
+        return upVotes;
+    }
+
+    public void setDownVotes(String downVotes) {
+        this.downVotes = downVotes;
+    }
+
+    public void setUpVotes(String upVotes) {
+        this.upVotes = upVotes;
     }
 }

@@ -171,7 +171,7 @@ public class AccountActivity extends AppCompatActivity
                     origin = new LatLng(mLastKnownLocation.getLatitude(),
                             mLastKnownLocation.getLongitude());
                     LatLng dest =M.getPosition();
-
+                    M.showInfoWindow();
                     // Getting URL to the Google Directions API
                     String url =getUrl(origin,dest);
                     Log.d("onMapClick", url.toString());
@@ -191,42 +191,42 @@ public class AccountActivity extends AppCompatActivity
         mFirebaseDatabase= FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference().child("bins");
 
-        final FloatingActionButton fabOptions = (FloatingActionButton) findViewById(R.id.fab_options);
-        FloatingActionButton fabSignOut = (FloatingActionButton) findViewById(R.id.fab_sign_out);
+//        final FloatingActionButton fabOptions = (FloatingActionButton) findViewById(R.id.fab_options);
+//        FloatingActionButton fabSignOut = (FloatingActionButton) findViewById(R.id.fab_sign_out);
         FloatingActionButton fabAddBins = (FloatingActionButton) findViewById(R.id.fab_add_bin);
         FloatingActionButton fabRecenter = (FloatingActionButton) findViewById(R.id.fab_recenter);
 
-        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_button);
-        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_button);
-        final Animation mShowLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_layout);
-        final Animation mHideLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_layout);
-        final LinearLayout signOutParent = (LinearLayout)findViewById(R.id.sign_out_parent);
-        final LinearLayout getBinsParent = (LinearLayout)findViewById(R.id.add_bin_parent);
-        final LinearLayout recenterParent = (LinearLayout)findViewById(R.id.recenter_parent);
-        fabOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(signOutParent.getVisibility()==View.VISIBLE && getBinsParent.getVisibility()==View.VISIBLE){
-                    signOutParent.setVisibility(View.GONE);
-                    getBinsParent.setVisibility(View.GONE);
-                    recenterParent.setVisibility(View.GONE);
-                    recenterParent.startAnimation(mHideLayout);
-                    signOutParent.startAnimation(mHideLayout);
-                    getBinsParent.startAnimation(mHideLayout);
-                    fabOptions.setImageResource(R.drawable.ic_list);
-                    fabOptions.startAnimation(mHideButton);
-                }else{
-                    signOutParent.setVisibility(View.VISIBLE);
-                    getBinsParent.setVisibility(View.VISIBLE);
-                    recenterParent.setVisibility(View.VISIBLE);
-                    signOutParent.startAnimation(mShowLayout);
-                    getBinsParent.startAnimation(mShowLayout);
-                    recenterParent.startAnimation(mShowLayout);
-                    fabOptions.startAnimation(mShowButton);
-                    fabOptions.setImageResource(R.drawable.ic_cancel);
-                }
-            }
-        });
+//        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_button);
+//        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_button);
+//        final Animation mShowLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_layout);
+//        final Animation mHideLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_layout);
+//        final LinearLayout signOutParent = (LinearLayout)findViewById(R.id.sign_out_parent);
+//        final LinearLayout getBinsParent = (LinearLayout)findViewById(R.id.add_bin_parent);
+//        final LinearLayout recenterParent = (LinearLayout)findViewById(R.id.recenter_parent);
+//        fabOptions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(signOutParent.getVisibility()==View.VISIBLE && getBinsParent.getVisibility()==View.VISIBLE){
+//                    signOutParent.setVisibility(View.GONE);
+//                    getBinsParent.setVisibility(View.GONE);
+//                    recenterParent.setVisibility(View.GONE);
+//                    recenterParent.startAnimation(mHideLayout);
+//                    signOutParent.startAnimation(mHideLayout);
+//                    getBinsParent.startAnimation(mHideLayout);
+//                    fabOptions.setImageResource(R.drawable.ic_list);
+//                    fabOptions.startAnimation(mHideButton);
+//                }else{
+//                    signOutParent.setVisibility(View.VISIBLE);
+//                    getBinsParent.setVisibility(View.VISIBLE);
+//                    recenterParent.setVisibility(View.VISIBLE);
+//                    signOutParent.startAnimation(mShowLayout);
+//                    getBinsParent.startAnimation(mShowLayout);
+//                    recenterParent.startAnimation(mShowLayout);
+//                    fabOptions.startAnimation(mShowButton);
+//                    fabOptions.setImageResource(R.drawable.ic_cancel);
+//                }
+//            }
+//        });
 
         fabRecenter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,12 +235,12 @@ public class AccountActivity extends AppCompatActivity
             }
         });
 
-        fabSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
+//        fabSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                signOut();
+//            }
+//        });
 
         fabAddBins.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,52 +281,62 @@ public class AccountActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+            finish();
         } else {
             super.onBackPressed();
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+            finish();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.account, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            signOut();
-
-            return true;
-        } else if (id == R.id.action_verify_mail) {
-
-
-            final FirebaseUser user = mFirebaseAuth.getCurrentUser();
-            if(!user.isEmailVerified()){
-            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(AccountActivity.this, "Email sent to "+user.getEmail().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });}else{
-                Toast.makeText(AccountActivity.this, "Email already verified", Toast.LENGTH_SHORT).show();
-            }
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.account, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//
+//            signOut();
+//
+//            return true;
+//        } else if (id == R.id.action_verify_mail) {
+//
+//
+//            final FirebaseUser user = mFirebaseAuth.getCurrentUser();
+//            if(!user.isEmailVerified()){
+//            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(AccountActivity.this, "Email sent to "+user.getEmail().toString(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });}else{
+//                Toast.makeText(AccountActivity.this, "Email already verified", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -408,13 +418,13 @@ public class AccountActivity extends AppCompatActivity
     @Override
     public boolean onMarkerClick(Marker marker) {
         M=marker;
+
         origin = new LatLng(mLastKnownLocation.getLatitude(),
                 mLastKnownLocation.getLongitude());
         LatLng dest = marker.getPosition();
         if(!origin.equals(dest)){
             mMap.clear();
             addmarker();
-
             makecircle();}
         return false;
     }
@@ -427,9 +437,9 @@ public class AccountActivity extends AppCompatActivity
         double lat,lang,dist;
         Log.i("AccountActivity","sjhfasvgfhvasfjhbasjhb////////////");
         for(int i=0;i<binsList.size();i++){
-
             lat=Double.parseDouble(binsList.get(i).getLatitude());
             lang=Double.parseDouble(binsList.get(i).getLongitude());
+            Log.i("Daaaaaaataaaaa",lat+"     "+lang);
             Location targetLocation = new Location("");//provider name is unnecessary
             targetLocation.setLatitude(lat);//your coords of course
             targetLocation.setLongitude(lang);
@@ -439,9 +449,8 @@ public class AccountActivity extends AppCompatActivity
                 Log.i("AccountActivity",dist+"    "+rad.getText().toString());
                 LatLng loc = new LatLng(lat,lang);
                 mMap.addMarker(new MarkerOptions().position(loc)
-                        .title("Marker in Roorkee"));
+                        .title("upvote : "+binsList.get(i).getUpVotes()+" downvote : "+binsList.get(i).getDownVotes()));
             }
-
         }
     }
 
@@ -814,6 +823,7 @@ public class AccountActivity extends AppCompatActivity
                 // Drawing polyline in the Google Map for the i-th route
                 if(lineOptions != null) {
                     polyline=mMap.addPolyline(lineOptions);
+                    M.showInfoWindow();
                     polyline.setClickable(true);
                     mMap.setOnPolylineClickListener(obj);
                 }
