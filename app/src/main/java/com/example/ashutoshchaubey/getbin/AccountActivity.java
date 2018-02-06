@@ -422,10 +422,7 @@ public class AccountActivity extends AppCompatActivity
         origin = new LatLng(mLastKnownLocation.getLatitude(),
                 mLastKnownLocation.getLongitude());
         LatLng dest = marker.getPosition();
-        if(!origin.equals(dest)){
-            mMap.clear();
-            addmarker();
-            makecircle();}
+        M.showInfoWindow();
         return false;
     }
 
