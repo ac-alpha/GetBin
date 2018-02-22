@@ -59,7 +59,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BinInfoActivity"></activity>
+        <activity android:name=".BinInfoActivity" />
+        <activity
+            android:name=".RateBinActivity"
+            android:label="Rate Bin"
+            android:parentActivityName=".AccountActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="User Profile"
+            android:parentActivityName=".AccountActivity" />
+        <activity android:name=".JunkActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,29 +1,43 @@
 package com.example.ashutoshchaubey.getbin;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by ashutoshchaubey on 03/02/18.
  */
 
-public class BinInfo {
+public class BinInfo implements Serializable {
 
+    public String binId;
     public String latitude;
     public String longitude;
     public String imageUrl;
     public String upVotes;
     public String downVotes;
     public String isVerified;
+    public ArrayList<String> upVotedUsers;
+    public ArrayList<String> downVotedUsers;
+    public String uploader;
 
     public BinInfo(){}
 
-    public BinInfo(String latitude,String longitude, String imageUrl, String upVotes, String downVotes, String isVerified){
-
+    public BinInfo(String uploader, String binId,String latitude,String longitude, String imageUrl, String upVotes, String downVotes, String isVerified, ArrayList<String> upVotedUsers, ArrayList<String> downVotedUsers){
+        this.binId=binId;
         this.imageUrl=imageUrl;
         this.latitude=latitude;
         this.upVotes=upVotes;
         this.downVotes=downVotes;
         this.longitude=longitude;
         this.isVerified=isVerified;
+        this.downVotedUsers=downVotedUsers;
+        this.upVotedUsers=upVotedUsers;
+        this.uploader=uploader;
 
+    }
+
+    public String getBinId() {
+        return binId;
     }
 
     public String getImageUrl() {
@@ -73,5 +87,25 @@ public class BinInfo {
 
     public void setUpVotes(String upVotes) {
         this.upVotes = upVotes;
+    }
+
+    public ArrayList<String> getDownVotedUsers() {
+        return downVotedUsers;
+    }
+
+    public ArrayList<String> getUpVotedUsers() {
+        return upVotedUsers;
+    }
+
+    public void setDownVotedUsers(ArrayList<String> downVotedUsers) {
+        this.downVotedUsers = downVotedUsers;
+    }
+
+    public void setUpVotedUsers(ArrayList<String> upVotedUsers) {
+        this.upVotedUsers = upVotedUsers;
+    }
+
+    public void setBinId(String binId) {
+        this.binId = binId;
     }
 }

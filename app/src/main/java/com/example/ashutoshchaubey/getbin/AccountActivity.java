@@ -1,5 +1,6 @@
 package com.example.ashutoshchaubey.getbin;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -94,7 +95,7 @@ public class AccountActivity extends AppCompatActivity
     public TextView rad;
     public int h=0;
     public AccountActivity obj=this;
-    public Marker m=null,M=null;
+    public static Marker m=null,M=null;
     private boolean mLocationPermissionGranted;
     private Location mLastKnownLocation;
     private static final int DEFAULT_ZOOM = 18;
@@ -103,23 +104,47 @@ public class AccountActivity extends AppCompatActivity
     private final LatLng mDefaultLocation = new LatLng(29.8543, 77.8880);
     public LatLng origin;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    List<BinInfo> binsList = new ArrayList<>();
+    public static List<BinInfo> binsList = new ArrayList<>();
     public Bundle save;
     FirebaseAuth mFirebaseAuth;
     ChildEventListener mChildEventListener;
     DatabaseReference mDatabaseReference;
     FirebaseDatabase mFirebaseDatabase;
+    public static Handler ha;
+    public static Runnable runnable;
+    public int i=0;
 
     @Override
     protected void onResume() {
+
         super.onResume();
         attachDatabaseReadListener();
+        if(i!=0){
+        Intent intent1 = getIntent();
+        finish();
+        startActivity(intent1);}++i;
+        Log.i("abc","222222222222   "+i);
+        if(mMap!=null){
+        mMap.clear();
+        rad=(TextView)findViewById(R.id.rad);
+        mMap.setOnMarkerClickListener(this);
+        addmarker();
+        getLocationPermission();
+
+        // Turn on the My Location layer and the related control on the map.
+        updateLocationUI();
+        // Get the current location of the device and set the position of the map.
+        getDeviceLocation();}
     }
     @Override
     protected void onPause() {
         super.onPause();
         detachDatabaseReadListener();
-        binsList.clear();
+//        binsList.clear();
+        Log.i("abc","111111111111");
+        if(ha!=null)
+        ha.removeCallbacks(AccountActivity.runnable);
+
     }
 
     public void ongps()
@@ -158,14 +183,14 @@ public class AccountActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        final Handler ha=new Handler();
-        ha.postDelayed(new Runnable() {
+        ha=new Handler();
+        runnable=new Runnable() {
             @Override
             public void run() {
                 //call function
                 addmarker();
                 if(mMap!=null)
-                getDeviceLocation();
+                    getDeviceLocation();
                 ha.postDelayed(this, 2000);
                 if(M!=null){
                     origin = new LatLng(mLastKnownLocation.getLatitude(),
@@ -178,12 +203,20 @@ public class AccountActivity extends AppCompatActivity
                     FetchUrl FetchUrl = new FetchUrl();
                     // Start downloading json data from Google Directions API
                     FetchUrl.execute(url);
+                    if(distance(origin.latitude, origin.longitude, dest.latitude, dest.longitude)<10 && M.getTag()!=null )
+                    {
+//                        flag++;
+//                        prevBin=(BinInfo)M.getTag();
+                        BinInfo bin=(BinInfo) M.getTag();
+                        Intent i=new Intent(AccountActivity.this,RateBinActivity.class);
+                        i.putExtra("Bin",bin);
+                        startActivity(i);
+
+                    }
                 }
-
             }
-        }, 1000);
-
-
+        };
+        ha.postDelayed(runnable, 2000);
 
         binsList = new ArrayList<>();
 
@@ -195,6 +228,7 @@ public class AccountActivity extends AppCompatActivity
 //        FloatingActionButton fabSignOut = (FloatingActionButton) findViewById(R.id.fab_sign_out);
         FloatingActionButton fabAddBins = (FloatingActionButton) findViewById(R.id.fab_add_bin);
         FloatingActionButton fabRecenter = (FloatingActionButton) findViewById(R.id.fab_recenter);
+
 
 //        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_button);
 //        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_button);
@@ -246,11 +280,11 @@ public class AccountActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 //TO-DO
-                if(binsList.size()>0){
-                    Toast.makeText(AccountActivity.this, "Hurray", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(AccountActivity.this, "Mar gayii apnii toh", Toast.LENGTH_SHORT).show();
-                }
+//                if(binsList.size()>0){
+//                    Toast.makeText(AccountActivity.this, "Hurray", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    Toast.makeText(AccountActivity.this, "Mar gayii apnii toh", Toast.LENGTH_SHORT).show();
+//                }
                 Log.i("AccountActivity",binsList.size()+" FOCUS AT THIS");
                 Intent i=new Intent(AccountActivity.this, AddBinActivity.class);
                 i.putExtra("lat",Double.toString(mLastKnownLocation.getLatitude()));
@@ -268,6 +302,8 @@ public class AccountActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -344,18 +380,11 @@ public class AccountActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_profile) {
+            startActivity(new Intent(AccountActivity.this, ProfileActivity.class));
+            finish();
+        } else if (id == R.id.nav_signout) {
+            signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -445,8 +474,9 @@ public class AccountActivity extends AppCompatActivity
             if(dist<Double.parseDouble(rad.getText().toString())){
                 Log.i("AccountActivity",dist+"    "+rad.getText().toString());
                 LatLng loc = new LatLng(lat,lang);
-                mMap.addMarker(new MarkerOptions().position(loc)
+                Marker y=mMap.addMarker(new MarkerOptions().position(loc)
                         .title("upvote : "+binsList.get(i).getUpVotes()+" downvote : "+binsList.get(i).getDownVotes()));
+                y.setTag(binsList.get(i));
             }
         }
     }
@@ -874,17 +904,23 @@ public class AccountActivity extends AppCompatActivity
         return (rad * 180.0 / Math.PI);
     }
 
-    private void attachDatabaseReadListener(){
+    public void attachDatabaseReadListener(){
         if(mChildEventListener==null) {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     BinInfo bin = dataSnapshot.getValue(BinInfo.class);
-                    binsList.add(bin);
+                    if (!binsList.contains(bin)){
+                        binsList.add(bin);
+                    }
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    BinInfo bin = dataSnapshot.getValue(BinInfo.class);
+                    if (!binsList.contains(bin)){
+                        binsList.add(bin);
+                    }
                 }
 
                 @Override
@@ -903,7 +939,7 @@ public class AccountActivity extends AppCompatActivity
         }
     }
 
-    private void detachDatabaseReadListener(){
+    public void detachDatabaseReadListener(){
         if(mChildEventListener!=null) {
             mDatabaseReference.removeEventListener(mChildEventListener);
             mChildEventListener=null;

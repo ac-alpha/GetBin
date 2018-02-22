@@ -26,6 +26,13 @@
         tools:layout_editor_absoluteX="67dp"
         tools:layout_editor_absoluteY="16dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_sign_in"
+        android:layout_centerHorizontal="true"
+        android:text="Password must be atleast 6 characters long" />
+
     <EditText
         android:id="@+id/edit_text_password_sign_in"
         android:layout_width="wrap_content"

@@ -61,6 +61,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(
+//                    "com.example.ashutoshchaubey.getbin",
+//                    PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//
+//        } catch (NoSuchAlgorithmException e) {
+//
+//        }
+
         //finding the progress bar
         mProgressBar=(ProgressBar)findViewById(R.id.progress_bar_login);
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -137,9 +152,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+
         //Facebook Login Onwards
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.facebook_login_button);
+        loginButton.setVisibility(View.GONE);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -204,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(MainActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
+                                mProgressBar.setVisibility(View.INVISIBLE);
                             }
 
                         }

@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,6 +30,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -50,7 +53,6 @@ public class AddBinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bin);
-
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mFirebaseStorage=FirebaseStorage.getInstance();
 
@@ -130,7 +132,12 @@ public class AddBinActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        BinInfo newBin = new BinInfo(lat,lang,downloadUrl.toString(),"0","0","true");
+                        ArrayList<String> a = new ArrayList<String>();
+                        ArrayList<String> b = new ArrayList<String>();
+                        a.add("Hello");
+                        b.add("Hi");
+                        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+                        BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,downloadUrl.toString(),"0","0","true",a,b);
                         mDatabaseReference.push().setValue(newBin);
                         mFabDone.setVisibility(View.VISIBLE);
                         mProgressBar.setVisibility(View.INVISIBLE);
@@ -139,5 +146,15 @@ public class AddBinActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    public String calculateTime() {
+//        return DateFormat.getDateTimeInstance().format(new Date());
+        return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();
+//        String dt="11-01-2016 5:8 AM";
+//        DateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+//        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+//        return format.toString();
+
     }
 }
