@@ -7,13 +7,6 @@
     android:background="@drawable/grad_background"
     android:orientation="vertical"
     tools:context="com.example.ashutoshchaubey.getbin.RateBinActivity">
-    <TextView
-        android:id="@+id/tv2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="The image will take some time to load. Please wait!"
-        android:textColor="@android:color/white"
-        android:layout_margin="4dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

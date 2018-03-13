@@ -2,6 +2,7 @@ package com.example.ashutoshchaubey.getbin;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import java.util.Locale;
 public class AddBinActivity extends AppCompatActivity {
 
     private static final int CHOOSE_CAMERA_RESULT = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 20;
     Button mCaptureImageButton;
     ImageView mCapturedImage, mImageCaptured;
     FloatingActionButton mFabDone;
@@ -92,13 +96,18 @@ public class AddBinActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "IMG_" + timeStamp + ".jpg");
-                tempuri = Uri.fromFile(file);
-                i.putExtra(MediaStore.EXTRA_OUTPUT, tempuri);
-                i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
-                startActivityForResult(i, CHOOSE_CAMERA_RESULT);
+//                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+//                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "IMG_" + timeStamp + ".jpg");
+//                tempuri = Uri.fromFile(file);
+//                i.putExtra(MediaStore.EXTRA_OUTPUT, tempuri);
+//                i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
+//                startActivityForResult(i, CHOOSE_CAMERA_RESULT);
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
 
             }
         });
@@ -120,32 +129,53 @@ public class AddBinActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==CHOOSE_CAMERA_RESULT && resultCode==RESULT_OK){
-            if(file.exists()){
+//        if(requestCode==CHOOSE_CAMERA_RESULT && resultCode==RESULT_OK){
+//            if(file.exists()){
+//                mProgressBar.setVisibility(View.VISIBLE);
+//                mImageCaptured.setVisibility(View.VISIBLE);
+//                mCapturedImage.setVisibility(View.VISIBLE);
+//                mCapturedImage.setImageURI(tempuri);
+//                Toast.makeText(this,"The image was saved at "+file.getAbsolutePath(),Toast.LENGTH_LONG).show();
+//                StorageReference photoRef = mPhotoStorageReference.child(tempuri.getLastPathSegment());
+//                photoRef.putFile(tempuri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                        ArrayList<String> a = new ArrayList<String>();
+//                        ArrayList<String> b = new ArrayList<String>();
+//                        a.add("Hello");
+//                        b.add("Hi");
+//                        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+//                        BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,downloadUrl.toString(),"0","0","true",a,b);
+//                        mDatabaseReference.push().setValue(newBin);
+//                        mFabDone.setVisibility(View.VISIBLE);
+//                        mProgressBar.setVisibility(View.INVISIBLE);
+//                    }
+//                });
+//            }
+
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mImageCaptured.setVisibility(View.VISIBLE);
                 mCapturedImage.setVisibility(View.VISIBLE);
-                mCapturedImage.setImageURI(tempuri);
-                Toast.makeText(this,"The image was saved at "+file.getAbsolutePath(),Toast.LENGTH_LONG).show();
-                StorageReference photoRef = mPhotoStorageReference.child(tempuri.getLastPathSegment());
-                photoRef.putFile(tempuri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        ArrayList<String> a = new ArrayList<String>();
-                        ArrayList<String> b = new ArrayList<String>();
-                        a.add("Hello");
-                        b.add("Hi");
-                        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-                        BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,downloadUrl.toString(),"0","0","true",a,b);
-                        mDatabaseReference.push().setValue(newBin);
-                        mFabDone.setVisibility(View.VISIBLE);
-                        mProgressBar.setVisibility(View.INVISIBLE);
-                    }
-                });
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
+                mCapturedImage.setImageBitmap(imageBitmap);
+                String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                ArrayList<String> a = new ArrayList<String>();
+                ArrayList<String> b = new ArrayList<String>();
+                a.add("Hello");
+                b.add("Hi");
+                FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+                BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,imageEncoded,"0","0","true",a,b);
+                mDatabaseReference.push().setValue(newBin);
+                mFabDone.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
             }
 
-        }
+//        }
     }
 
     public String calculateTime() {

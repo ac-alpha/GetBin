@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -81,28 +82,19 @@ public class RateBinActivity extends AppCompatActivity {
         mBinImage=(ImageView)findViewById(R.id.image_view_bin_rate);
 
         final ProgressBar progressBar=(ProgressBar)findViewById(R.id.pb2);
-        final TextView tv=(TextView)findViewById(R.id.tv2) ;
 
         mUpVotesView.setText(mBin.getUpVotes());
         mDownVotesView.setText(mBin.getDownVotes());
-        Glide.with(this)
-                .load(mBin.getImageUrl())
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        Toast.makeText(RateBinActivity.this, "Can't load image", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
+        try {
+            byte [] encodeByte= Base64.decode(mBin.getImageUrl(),Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            mBinImage.setImageBitmap(bitmap);
+            progressBar.setVisibility(View.GONE);
+        } catch(Exception e) {
+            Toast.makeText(this, "Can't Load Image", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+        }
 
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        tv.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
-                .into(mBinImage);
         for(int i=0;i<mDownVotedUsers.size();i++){
             if(mDownVotedUsers.get(i).equals(mUid)){
                 mButtonsEnabled=false;
