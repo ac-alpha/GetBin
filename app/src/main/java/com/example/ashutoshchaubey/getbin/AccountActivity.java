@@ -224,43 +224,43 @@ public class AccountActivity extends AppCompatActivity
         mFirebaseDatabase= FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference().child("bins");
 
-//        final FloatingActionButton fabOptions = (FloatingActionButton) findViewById(R.id.fab_options);
-//        FloatingActionButton fabSignOut = (FloatingActionButton) findViewById(R.id.fab_sign_out);
+        final FloatingActionButton fabOptions = (FloatingActionButton) findViewById(R.id.fab_options);
+        FloatingActionButton fabSignOut = (FloatingActionButton) findViewById(R.id.fab_sign_out);
         FloatingActionButton fabAddBins = (FloatingActionButton) findViewById(R.id.fab_add_bin);
         FloatingActionButton fabRecenter = (FloatingActionButton) findViewById(R.id.fab_recenter);
 
 
-//        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_button);
-//        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_button);
-//        final Animation mShowLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_layout);
-//        final Animation mHideLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_layout);
-//        final LinearLayout signOutParent = (LinearLayout)findViewById(R.id.sign_out_parent);
-//        final LinearLayout getBinsParent = (LinearLayout)findViewById(R.id.add_bin_parent);
-//        final LinearLayout recenterParent = (LinearLayout)findViewById(R.id.recenter_parent);
-//        fabOptions.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(signOutParent.getVisibility()==View.VISIBLE && getBinsParent.getVisibility()==View.VISIBLE){
-//                    signOutParent.setVisibility(View.GONE);
-//                    getBinsParent.setVisibility(View.GONE);
-//                    recenterParent.setVisibility(View.GONE);
-//                    recenterParent.startAnimation(mHideLayout);
-//                    signOutParent.startAnimation(mHideLayout);
-//                    getBinsParent.startAnimation(mHideLayout);
-//                    fabOptions.setImageResource(R.drawable.ic_list);
-//                    fabOptions.startAnimation(mHideButton);
-//                }else{
-//                    signOutParent.setVisibility(View.VISIBLE);
-//                    getBinsParent.setVisibility(View.VISIBLE);
-//                    recenterParent.setVisibility(View.VISIBLE);
-//                    signOutParent.startAnimation(mShowLayout);
-//                    getBinsParent.startAnimation(mShowLayout);
-//                    recenterParent.startAnimation(mShowLayout);
-//                    fabOptions.startAnimation(mShowButton);
-//                    fabOptions.setImageResource(R.drawable.ic_cancel);
-//                }
-//            }
-//        });
+        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_button);
+        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_button);
+        final Animation mShowLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_layout);
+        final Animation mHideLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_layout);
+        final LinearLayout signOutParent = (LinearLayout)findViewById(R.id.sign_out_parent);
+        final LinearLayout getBinsParent = (LinearLayout)findViewById(R.id.add_bin_parent);
+        final LinearLayout recenterParent = (LinearLayout)findViewById(R.id.recenter_parent);
+        fabOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(signOutParent.getVisibility()==View.VISIBLE && getBinsParent.getVisibility()==View.VISIBLE){
+                    signOutParent.setVisibility(View.GONE);
+                    getBinsParent.setVisibility(View.GONE);
+                    recenterParent.setVisibility(View.GONE);
+                    recenterParent.startAnimation(mHideLayout);
+                    signOutParent.startAnimation(mHideLayout);
+                    getBinsParent.startAnimation(mHideLayout);
+                    fabOptions.setImageResource(R.drawable.ic_list);
+                    fabOptions.startAnimation(mHideButton);
+                }else{
+                    signOutParent.setVisibility(View.VISIBLE);
+                    getBinsParent.setVisibility(View.VISIBLE);
+                    recenterParent.setVisibility(View.VISIBLE);
+                    signOutParent.startAnimation(mShowLayout);
+                    getBinsParent.startAnimation(mShowLayout);
+                    recenterParent.startAnimation(mShowLayout);
+                    fabOptions.startAnimation(mShowButton);
+                    fabOptions.setImageResource(R.drawable.ic_cancel);
+                }
+            }
+        });
 
         fabRecenter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,12 +269,12 @@ public class AccountActivity extends AppCompatActivity
             }
         });
 
-//        fabSignOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                signOut();
-//            }
-//        });
+        fabSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut();
+            }
+        });
 
         fabAddBins.setOnClickListener(new View.OnClickListener() {
             @Override
