@@ -49,7 +49,8 @@
         <activity
             android:name=".AddBinActivity"
             android:label="Add Bin"
-            android:parentActivityName=".AccountActivity" />
+            android:parentActivityName=".AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">

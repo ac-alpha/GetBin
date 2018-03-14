@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -170,14 +171,19 @@ public class AccountActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         save=savedInstanceState;
-            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_account);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            seekBar = (SeekBar) findViewById(R.id.radius);
-            seekBar.setOnSeekBarChangeListener(this);
-            ongps();
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        seekBar = (SeekBar) findViewById(R.id.radius);
+        seekBar.setOnSeekBarChangeListener(this);
+        ongps();
+
+        Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
+        mTitle.setTypeface(lobster);
 
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
