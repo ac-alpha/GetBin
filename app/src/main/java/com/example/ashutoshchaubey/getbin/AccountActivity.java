@@ -406,7 +406,7 @@ public class AccountActivity extends AppCompatActivity
         }else{
             Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
         }
-        startActivity(new Intent(AccountActivity.this,MainActivity.class));
+        startActivity(new Intent(AccountActivity.this,AppDescriptionActivity.class));
     }
 
 

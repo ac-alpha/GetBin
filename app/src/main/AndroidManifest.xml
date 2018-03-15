@@ -50,7 +50,7 @@
             android:name=".AddBinActivity"
             android:label="Add Bin"
             android:parentActivityName=".AccountActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -68,7 +68,13 @@
             android:name=".ProfileActivity"
             android:label="User Profile"
             android:parentActivityName=".AccountActivity" />
-        <activity android:name=".JunkActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".JunkActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AppDescriptionActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

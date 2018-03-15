@@ -8,6 +8,23 @@
     android:background="@drawable/grad_background"
     tools:context="com.example.ashutoshchaubey.getbin.MainActivity">
 
+    <ImageView
+        android:id="@+id/swipe_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/progress_bar_login"
+        android:src="@drawable/ic_arrow_up" />
+
+    <TextView
+        android:layout_below="@id/swipe_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Swipe up to login"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/edit_text_email_id_log_in"
         android:layout_width="wrap_content"

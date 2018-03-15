@@ -9,5 +9,6 @@
 
     <string name="facebook_app_id">192918277961464</string>
     <string name="fb_login_protocol_scheme">fb192918277961464</string>
+    <string name="hello_blank_fragment">Hello World!!</string>
 
 </resources>

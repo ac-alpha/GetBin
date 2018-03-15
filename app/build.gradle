@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenLocal()
+    maven { url "https://jitpack.io" }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -35,8 +43,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.microsoft.projectoxford:vision:1.0.394'
     compile 'com.google.android.gms:play-services-location:11.8.0'
-
     compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'com.sothree.slidinguppanel:library:3.4.0'
+    compile 'com.github.varunest:sparkbutton:1.0.5'
+    compile 'com.microsoft.projectoxford:vision:1.0.394'
 
 
 }
