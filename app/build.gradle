@@ -46,7 +46,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.sothree.slidinguppanel:library:3.4.0'
     compile 'com.github.varunest:sparkbutton:1.0.5'
-    compile 'com.microsoft.projectoxford:vision:1.0.394'
+    compile 'com.microsoft.projectoxford:vision:1.0.374'
 
 
 }

@@ -10,5 +10,7 @@
     <string name="facebook_app_id">192918277961464</string>
     <string name="fb_login_protocol_scheme">fb192918277961464</string>
     <string name="hello_blank_fragment">Hello World!!</string>
+    <string name="subscription_key">1892e297da644c88b44d587094635aa4</string>
+    <string name="subscription_apiroot">https://southeastasia.api.cognitive.microsoft.com/vision/v1.0</string>
 
 </resources>

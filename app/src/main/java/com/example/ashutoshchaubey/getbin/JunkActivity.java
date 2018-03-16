@@ -19,7 +19,7 @@ public class JunkActivity extends AppCompatActivity {
                 startActivity(homeIntent);
                 finish();
             }
-        }, 2000);
+        }, 200);
 
     }
 }

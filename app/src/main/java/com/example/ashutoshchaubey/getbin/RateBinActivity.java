@@ -40,7 +40,7 @@ public class RateBinActivity extends AppCompatActivity {
     ArrayList<String> mUpVotedUsers;
     ArrayList<String> mDownVotedUsers;
     ImageView mUpVoteButton, mDownVoteButton,mBinImage;
-    TextView mUpVotesView, mDownVotesView;
+    TextView mUpVotesView, mDownVotesView,isVerifiedText;
     ImageView mVerified;
     FirebaseAuth mFirebaseAuth;
     DatabaseReference mDatabaseReference;
@@ -78,8 +78,14 @@ public class RateBinActivity extends AppCompatActivity {
         mDownVoteButton=(ImageView)findViewById(R.id.down_vote);
         mUpVotesView=(TextView)findViewById(R.id.total_up_votes);
         mDownVotesView=(TextView)findViewById(R.id.total_down_votes);
-        mVerified=(ImageView)findViewById(R.id.is_verified);
         mBinImage=(ImageView)findViewById(R.id.image_view_bin_rate);
+        isVerifiedText=(TextView)findViewById(R.id.verified_text_view);
+
+        if(mIsVerified.equals("Verified")){
+            isVerifiedText.setText("The location contains a bin as detected by our software");
+        }else{
+            isVerifiedText.setText("No bin is detected at the location by our software. If a bin is there, please upvote it!!");
+        }
 
         final ProgressBar progressBar=(ProgressBar)findViewById(R.id.pb2);
 
@@ -105,6 +111,7 @@ public class RateBinActivity extends AppCompatActivity {
                 mButtonsEnabled=false;
             }
         }
+
         if(mButtonsEnabled) {
             mUpVoteButton.setOnClickListener(new View.OnClickListener() {
                 @Override

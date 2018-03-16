@@ -1,10 +1,13 @@
 package com.example.ashutoshchaubey.getbin;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -12,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -35,9 +39,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
+import com.microsoft.projectoxford.vision.VisionServiceClient;
+import com.microsoft.projectoxford.vision.VisionServiceRestClient;
+import com.microsoft.projectoxford.vision.contract.AnalysisResult;
+import com.microsoft.projectoxford.vision.contract.Category;
+import com.microsoft.projectoxford.vision.contract.Face;
+import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +58,7 @@ import java.util.Locale;
 
 public class AddBinActivity extends AppCompatActivity {
 
-    private static final int CHOOSE_CAMERA_RESULT = 1;
+    private String isVerified="Not verified";
     private static final int REQUEST_IMAGE_CAPTURE = 20;
     Button mCaptureImageButton;
     ImageView mCapturedImage, mImageCaptured;
@@ -58,6 +71,11 @@ public class AddBinActivity extends AppCompatActivity {
     FirebaseStorage mFirebaseStorage;
     StorageReference mPhotoStorageReference;
     String lat,lang;
+    private Bitmap mBitmap;
+    private VisionServiceClient client;
+    ProgressDialog progressDialog;
+    String imageEncoded;
+    public int noOfAttempts=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +86,13 @@ public class AddBinActivity extends AppCompatActivity {
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
+
+        if (client==null){
+            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_apiroot));
+        }
+
+        progressDialog=new ProgressDialog(AddBinActivity.this);
+        progressDialog.setMessage("Analyzing...");
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -137,6 +162,13 @@ public class AddBinActivity extends AppCompatActivity {
         mFabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<String> a = new ArrayList<String>();
+                ArrayList<String> b = new ArrayList<String>();
+                a.add("Hello");
+                b.add("Hi");
+                FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+                BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,imageEncoded,"0","0",isVerified,a,b);
+                mDatabaseReference.push().setValue(newBin);
                 Intent intent = new Intent(AddBinActivity.this, AccountActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -182,16 +214,19 @@ public class AddBinActivity extends AppCompatActivity {
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
+                mBitmap=imageBitmap;
                 mCapturedImage.setImageBitmap(imageBitmap);
-                String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-                ArrayList<String> a = new ArrayList<String>();
-                ArrayList<String> b = new ArrayList<String>();
-                a.add("Hello");
-                b.add("Hi");
-                FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-                BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,imageEncoded,"0","0","true",a,b);
-                mDatabaseReference.push().setValue(newBin);
-                mFabDone.setVisibility(View.VISIBLE);
+                imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+//                ArrayList<String> a = new ArrayList<String>();
+//                ArrayList<String> b = new ArrayList<String>();
+//                a.add("Hello");
+//                b.add("Hi");
+//                FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+//                BinInfo newBin = new BinInfo(user.getUid(),calculateTime(),lat,lang,imageEncoded,"0","0","true",a,b);
+//                mDatabaseReference.push().setValue(newBin);
+//                mFabDone.setVisibility(View.VISIBLE);
+//                mProgressBar.setVisibility(View.INVISIBLE);
+                doAnalyze();
                 mProgressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -207,4 +242,154 @@ public class AddBinActivity extends AppCompatActivity {
 //        return format.toString();
 
     }
+
+    public void doAnalyze() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        try {
+            new doRequest().execute();
+        } catch (Exception e)
+        {
+            Toast.makeText(this, "Some error occurred...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String process() throws VisionServiceException, IOException {
+        Gson gson = new Gson();
+        String[] features = {"Tags"};
+        String[] details = {};
+
+        // Put the image into an input stream for detection.
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        mBitmap.compress(Bitmap.CompressFormat.JPEG, 50, output);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray());
+
+        AnalysisResult v = this.client.analyzeImage(inputStream, features, details);
+
+        String result = gson.toJson(v);
+        Log.d("result", result);
+
+        return result;
+    }
+
+    private class doRequest extends AsyncTask<String, String, String> {
+        // Store error message
+        private Exception e = null;
+
+        ProgressDialog progressDialog=new ProgressDialog(AddBinActivity.this);
+
+        public doRequest() {
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            try {
+                return process();
+            } catch (Exception e) {
+                this.e = e;    // Store error
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+            progressDialog.setMessage("Finding Bin...");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
+            // Display based on error existence
+            progressDialog.dismiss();
+            if (e != null) {
+                Toast.makeText(AddBinActivity.this, "Some error occurred...", Toast.LENGTH_SHORT).show();
+                this.e = null;
+            } else {
+                Gson gson = new Gson();
+                AnalysisResult result = gson.fromJson(data, AnalysisResult.class);
+
+//                imageDesc.append("Image format: " + result.metadata.format + "\n");
+//                imageDesc.append("Image width: " + result.metadata.width + ", height:" + result.metadata.height + "\n");
+//                imageDesc.append("Clip Art Type: " + result.imageType.clipArtType + "\n");
+//                imageDesc.append("Line Drawing Type: " + result.imageType.lineDrawingType + "\n");
+//                imageDesc.append("Is Adult Content:" + result.adult.isAdultContent + "\n");
+//                imageDesc.append("Adult score:" + result.adult.adultScore + "\n");
+//                imageDesc.append("Is Racy Content:" + result.adult.isRacyContent + "\n");
+//                imageDesc.append("Racy score:" + result.adult.racyScore + "\n\n") ;
+//                imageDesc.append("Tags:"+result.tags);
+
+//                for (Category category: result.categories) {
+//                    imageDesc.append("Category: " + category.name + ", score: " + category.score + "\n");
+//                }
+//
+//                imageDesc.append("\n");
+//                int faceCount = 0;
+//                for (Face face: result.faces) {
+//                    faceCount++;
+//                    imageDesc.append("face " + faceCount + ", gender:" + face.gender + "(score: " + face.genderScore + "), age: " + + face.age + "\n");
+//                    imageDesc.append("    left: " + face.faceRectangle.left +  ",  top: " + face.faceRectangle.top + ", width: " + face.faceRectangle.width + "  height: " + face.faceRectangle.height + "\n" );
+//                }
+//                if (faceCount == 0) {
+//                    imageDesc.append("No face is detected");
+//                }
+//                imageDesc.append("\n");
+//
+//                imageDesc.append("\nDominant Color Foreground :" + result.color.dominantColorForeground + "\n");
+//                imageDesc.append("Dominant Color Background :" + result.color.dominantColorBackground + "\n");
+//
+//                imageDesc.append("\n--- Raw Data ---\n\n");
+//                imageDesc.append(data);
+                if(data.contains("bin")||data.contains("cup")||data.contains("container")||data.contains("trash")){
+//                    imageDesc.append("The image contains a bin!! Thanks for your help...");
+//                    Toast.makeText(AddBinActivity.this, "The image contains a bin!! Thanks for your help...", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(AddBinActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(AddBinActivity.this);
+                    }
+                    builder.setTitle("Congratulations!!")
+                            .setMessage("We found a bin in the captured image. Thanks for your help!! Click on the double tick icon")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    mFabDone.setVisibility(View.VISIBLE);
+                    isVerified="Verified";
+                }else{
+                    noOfAttempts++;
+                    if(noOfAttempts==1){
+                        AlertDialog.Builder builder;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder = new AlertDialog.Builder(AddBinActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                        } else {
+                            builder = new AlertDialog.Builder(AddBinActivity.this);
+                        }
+                        builder.setTitle("Oops")
+                                .setMessage("We couldn't find a bin in the captured image... Please recapture... Hold the camera close to the bin...")
+                                .setPositiveButton("OK", null)
+                                .show();
+//                        Toast.makeText(AddBinActivity.this, "We couldn't find a bin in the captured image... Please recapture... Hold the camera close to the bin...", Toast.LENGTH_SHORT).show();
+                    }else{
+                        final AlertDialog.Builder builder;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder = new AlertDialog.Builder(AddBinActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                        } else {
+                            builder = new AlertDialog.Builder(AddBinActivity.this);
+                        }
+                        builder.setTitle("Oops!!")
+                                .setMessage("We still can't find a bin in the image... If you still want to add it then press the double tick icon")
+                                .setPositiveButton("OK",null)
+                                .show();
+                        mFabDone.setVisibility(View.VISIBLE);
+//                        Toast.makeText(AddBinActivity.this, "We still can't find a bin in the image...I", Toast.LENGTH_SHORT).show();
+                    }
+//                    imageDesc.append("We couldn't find a bin in the captured image... Please recapture... Hold the camera close to the bin...");
+                }
+//                imageDesc.append("/n"+data);
+            }
+
+        }
+    }
+
 }

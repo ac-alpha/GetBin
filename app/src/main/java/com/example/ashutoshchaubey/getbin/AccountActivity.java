@@ -481,7 +481,7 @@ public class AccountActivity extends AppCompatActivity
                 Log.i("AccountActivity",dist+"    "+rad.getText().toString());
                 LatLng loc = new LatLng(lat,lang);
                 Marker y=mMap.addMarker(new MarkerOptions().position(loc)
-                        .title("upvote : "+binsList.get(i).getUpVotes()+" downvote : "+binsList.get(i).getDownVotes()));
+                        .title("upvote : "+binsList.get(i).getUpVotes()+" downvote : "+binsList.get(i).getDownVotes()+" "+binsList.get(i).getIsVerified()));
                 y.setTag(binsList.get(i));
             }
         }

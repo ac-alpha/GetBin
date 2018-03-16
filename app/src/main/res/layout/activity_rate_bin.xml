@@ -91,13 +91,40 @@
                 tools:text="10" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/is_verified"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_done"
-            android:visibility="gone" />
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal"-->
+            <!--&gt;-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/isVerified"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="@dimen/fab_margin"-->
+                <!--android:src="@drawable/ic_done" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/verified_text_view"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="30sp"-->
+                <!--tools:text="Verified" />-->
+        <!--</LinearLayout>-->
+
+
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/verified_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Verified"
+        android:padding="2dp"
+        android:textColor="@android:color/white"
+        />
 </LinearLayout>
