@@ -101,6 +101,8 @@ public class AddBinActivity extends AppCompatActivity {
 
         Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
         mTitle.setTypeface(lobster);
+        TextView patv1=(TextView)findViewById(R.id.abatv2);
+        patv1.setTypeface(lobster);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mFirebaseStorage=FirebaseStorage.getInstance();

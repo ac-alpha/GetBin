@@ -26,17 +26,19 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position==0){
-            return new OneFragment();
+            return new OneOneFragment();
         }else if(position==1) {
-            return new TwoFragment();
-        }else{
+            return new OneFragment();
+        }else if(position==2){
             return new ThreeFragment();
+        }else{
+            return new TwoFragment();
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
 

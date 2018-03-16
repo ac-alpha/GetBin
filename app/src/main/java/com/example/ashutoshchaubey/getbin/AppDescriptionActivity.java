@@ -82,6 +82,9 @@ public class AppDescriptionActivity extends AppCompatActivity {
         Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
         textView.setTypeface(lobster);
 
+        TextView tvacb=(TextView)findViewById(R.id.swipe_up_text);
+        tvacb.setTypeface(lobster);
+
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 

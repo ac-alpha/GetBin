@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/grad_background"
     tools:context="com.example.ashutoshchaubey.getbin.AddBinActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -33,71 +34,79 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        android:id="@+id/abatv2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:text="Add Bin"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/views_padding"/>
 
-        <LinearLayout
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/grad_background"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <Button
+                android:id="@+id/button_capture"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/mybutton"
+                android:text="Capture Image" />
 
-                <Button
-                    android:id="@+id/button_capture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/mybutton"
-                    android:text="Capture Image" />
+            <ImageView
+                android:id="@+id/image_captured"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="4dp"
+                android:elevation="2dp"
+                android:src="@drawable/ic_done_black" />
+        </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/image_captured"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="4dp"
-                    android:elevation="2dp"
-                    android:src="@drawable/ic_done_black" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1">
 
-            <RelativeLayout
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImage"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:layout_weight="1">
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
 
+            <ProgressBar
+                android:id="@+id/progres_bar_add_bin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/imageViewCapturedImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_all_fields_done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/fab_margin"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_done_all" />
+        </RelativeLayout>
 
-                <ProgressBar
-                    android:id="@+id/progres_bar_add_bin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_all_fields_done"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/ic_done_all" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
+    </LinearLayout>
 
 
 </LinearLayout>

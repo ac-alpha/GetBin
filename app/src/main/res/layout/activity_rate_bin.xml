@@ -34,6 +34,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        android:id="@+id/rbatv1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:text="Rate Bin"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/views_padding"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

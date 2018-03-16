@@ -1,65 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grad_background"
+    android:orientation="vertical"
     tools:context="com.example.ashutoshchaubey.getbin.MainActivity">
 
-    <ProgressBar
-        android:id="@+id/progress_bar_signin"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_text_email_id_sign_in"
-        android:layout_centerHorizontal="true" />
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <EditText
-        android:id="@+id/edit_text_email_id_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:hint="Enter your email address"
-        android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="16dp" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_sign_in"
-        android:layout_centerHorizontal="true"
-        android:text="Password must be atleast 6 characters long" />
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/edit_text_password_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/edit_text_email_id_sign_in"
-        android:layout_below="@+id/edit_text_email_id_sign_in"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="Enter your password"/>
+        </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/edit_text_cnfrm_password_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/edit_text_password_sign_in"
-        android:layout_below="@+id/edit_text_password_sign_in"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="Confirm password"/>
+    </android.support.design.widget.AppBarLayout>
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_text_cnfrm_password_sign_in"
-        android:layout_centerHorizontal="true"
-        android:text="SignIn"
-        android:textAllCaps="false"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-</RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/edit_text_email_id_sign_in"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:id="@+id/edit_text_email_id_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="Enter your email address"
+            android:inputType="textEmailAddress"
+            tools:layout_editor_absoluteX="67dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_sign_in"
+            android:layout_centerHorizontal="true"
+            android:text="Password must be atleast 6 characters long" />
+
+        <EditText
+            android:id="@+id/edit_text_password_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/edit_text_email_id_sign_in"
+            android:layout_below="@+id/edit_text_email_id_sign_in"
+            android:ems="10"
+            android:hint="Enter your password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/edit_text_cnfrm_password_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/edit_text_password_sign_in"
+            android:layout_below="@+id/edit_text_password_sign_in"
+            android:ems="10"
+            android:hint="Confirm password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/button_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_text_cnfrm_password_sign_in"
+            android:layout_centerHorizontal="true"
+            android:text="SignIn"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
+</LinearLayout>
