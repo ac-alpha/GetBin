@@ -2,10 +2,10 @@ package com.example.ashutoshchaubey.getbin;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,11 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Text;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class JunkActivity extends AppCompatActivity {
+public class FeedbackActivity extends AppCompatActivity {
 
     FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
@@ -26,42 +25,41 @@ public class JunkActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_junk);
+        setContentView(R.layout.activity_feedback);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
-        TextView tv=(TextView)findViewById(R.id.textView);
 
         Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
-        tv.setTypeface(lobster);
+        mTitle.setTypeface(lobster);
 
-        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        mFirebaseDatabase= FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference().child("feedbacks");
 
-        final EditText feedbackR=(EditText)findViewById(R.id.feedback_rated);
 
-        Button skip = (Button)findViewById(R.id.skip_rated);
-        skip.setOnClickListener(new View.OnClickListener() {
+        TextView tv1=(TextView)findViewById(R.id.feedback_top);
+        tv1.setTypeface(lobster);
+
+        final EditText et1=(EditText)findViewById(R.id.feedback_fb);
+
+        Button submit =(Button)findViewById(R.id.submit_feedback);
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent homeIntent = new Intent(JunkActivity.this, AccountActivity.class);
-                startActivity(homeIntent);
-                finish();
-            }
-        });
-
-        Button submitFeedback = (Button)findViewById(R.id.submit_rated);
-        submitFeedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(feedbackR.getText().toString().equals("")){
-                    Toast.makeText(JunkActivity.this, "Please enter some text or press skip", Toast.LENGTH_SHORT).show();
+                if(et1.getText().toString().equals("")){
+                    Toast.makeText(FeedbackActivity.this, "This field can't be empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    Feedback fb=new Feedback(feedbackR.getText().toString());
+                    Feedback fb=new Feedback(et1.getText().toString());
                     mDatabaseReference.push().setValue(fb);
-                    startActivity(new Intent(JunkActivity.this, MainActivity.class));
+                    Toast.makeText(FeedbackActivity.this, "Thanks for your feedback!!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(FeedbackActivity.this, MainActivity.class));
                 }
             }
         });

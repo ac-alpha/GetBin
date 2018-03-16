@@ -391,6 +391,10 @@ public class AccountActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_signout) {
             signOut();
+        } else if(id==R.id.nav_feedback){
+            startActivity(new Intent(AccountActivity.this,FeedbackActivity.class));
+        }else if(id==R.id.nav_bug_report){
+            startActivity(new Intent(AccountActivity.this,BugReportActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

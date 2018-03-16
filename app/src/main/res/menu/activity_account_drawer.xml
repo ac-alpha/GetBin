@@ -9,10 +9,17 @@
             android:icon="@drawable/ic_account_box"
             android:title="Profile" />
         <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="Feedback" />
+        <item
+            android:id="@+id/nav_bug_report"
+            android:icon="@drawable/ic_bug_report"
+            android:title="Report Bug" />
+        <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_signout"
             android:title="Sign Out" />
     </group>
-
 
 </menu>

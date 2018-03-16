@@ -3,12 +3,17 @@ package com.example.ashutoshchaubey.getbin;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.varunest.sparkbutton.SparkButton;
 
 import org.w3c.dom.Text;
 
@@ -45,6 +51,7 @@ public class RateBinActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     DatabaseReference mDatabaseReference;
     DatabaseReference mMainDatabaseReference;
+//    SparkButton upVoteB,downVoteB;
 
     String mUid;
     String mKey;
@@ -59,6 +66,20 @@ public class RateBinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_bin);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+
+        Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
+        mTitle.setTypeface(lobster);
+
         if(AccountActivity.ha!=null)
         AccountActivity.ha.removeCallbacks(AccountActivity.runnable);
         mBin=(BinInfo) getIntent().getSerializableExtra("Bin");
@@ -80,6 +101,9 @@ public class RateBinActivity extends AppCompatActivity {
         mDownVotesView=(TextView)findViewById(R.id.total_down_votes);
         mBinImage=(ImageView)findViewById(R.id.image_view_bin_rate);
         isVerifiedText=(TextView)findViewById(R.id.verified_text_view);
+
+//        upVoteB=(SparkButton)findViewById(R.id.up_vote);
+//        downVoteB=(SparkButton)findViewById(R.id.down_vote);
 
         if(mIsVerified.equals("Verified")){
             isVerifiedText.setText("The location contains a bin as detected by our software");
@@ -104,11 +128,15 @@ public class RateBinActivity extends AppCompatActivity {
         for(int i=0;i<mDownVotedUsers.size();i++){
             if(mDownVotedUsers.get(i).equals(mUid)){
                 mButtonsEnabled=false;
+                mDownVoteButton.setImageResource(R.drawable.ic_thumb_down_color);
+//                downVoteB.setChecked(true);
             }
         }
         for(int j=0;j<mUpVotedUsers.size();j++){
             if(mUpVotedUsers.get(j).equals(mUid)){
                 mButtonsEnabled=false;
+//                upVoteB.setChecked(true);
+                mUpVoteButton.setImageResource(R.drawable.ic_thumb_up_color);
             }
         }
 
