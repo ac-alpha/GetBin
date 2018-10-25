@@ -28,7 +28,7 @@ public class TwoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_two, container, false);
 
         Typeface lobster = Typeface.createFromAsset(getContext().getAssets(), "fonts/lobster.otf");
-        TextView tv=(TextView)rootView.findViewById(R.id.ftv2);
+        TextView tv = (TextView) rootView.findViewById(R.id.ftv2);
         tv.setTypeface(lobster);
 
         return rootView;

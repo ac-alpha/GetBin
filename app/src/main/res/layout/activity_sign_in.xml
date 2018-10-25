@@ -70,8 +70,8 @@
             android:id="@+id/edit_text_password_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/edit_text_email_id_sign_in"
             android:layout_below="@+id/edit_text_email_id_sign_in"
+            android:layout_alignStart="@+id/edit_text_email_id_sign_in"
             android:ems="10"
             android:hint="Enter your password"
             android:inputType="textPassword" />
@@ -80,8 +80,8 @@
             android:id="@+id/edit_text_cnfrm_password_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/edit_text_password_sign_in"
             android:layout_below="@+id/edit_text_password_sign_in"
+            android:layout_alignStart="@+id/edit_text_password_sign_in"
             android:ems="10"
             android:hint="Confirm password"
             android:inputType="textPassword" />

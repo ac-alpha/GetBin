@@ -1,9 +1,7 @@
 package com.example.ashutoshchaubey.getbin;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -17,19 +15,17 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -38,16 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,13 +51,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,91 +72,93 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AccountActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,GoogleMap.OnPolylineClickListener,OnMapReadyCallback,GoogleMap.OnMarkerClickListener ,SeekBar.OnSeekBarChangeListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnPolylineClickListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, SeekBar.OnSeekBarChangeListener {
 
-    public String TAG ="abc";
-    private GoogleMap mMap;
+    private static final int DEFAULT_ZOOM = 18;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    public static Marker m = null, M = null;
+    public static List<BinInfo> binsList = new ArrayList<>();
+    public static Handler ha;
+    public static Runnable runnable;
+    private final LatLng mDefaultLocation = new LatLng(29.8543, 77.8880);
+    public String TAG = "abc";
     public PolylineOptions lineOptions;
-    public Polyline polyline=null;
+    public Polyline polyline = null;
     public Circle mCircle;
     public TextView rad;
-    public int h=0;
-    public AccountActivity obj=this;
-    public static Marker m=null,M=null;
-    private boolean mLocationPermissionGranted;
-    private Location mLastKnownLocation;
-    private static final int DEFAULT_ZOOM = 18;
+    public int h = 0;
+    public AccountActivity obj = this;
     public SeekBar seekBar;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-    private final LatLng mDefaultLocation = new LatLng(29.8543, 77.8880);
     public LatLng origin;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    public static List<BinInfo> binsList = new ArrayList<>();
     public Bundle save;
+    public int i = 0;
     FirebaseAuth mFirebaseAuth;
     ChildEventListener mChildEventListener;
     DatabaseReference mDatabaseReference;
     FirebaseDatabase mFirebaseDatabase;
-    public static Handler ha;
-    public static Runnable runnable;
-    public int i=0;
+    private GoogleMap mMap;
+    private boolean mLocationPermissionGranted;
+    private Location mLastKnownLocation;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onResume() {
 
         super.onResume();
         attachDatabaseReadListener();
-        if(i!=0){
-        Intent intent1 = getIntent();
-        finish();
-        startActivity(intent1);}++i;
-        Log.i("abc","222222222222   "+i);
-        if(mMap!=null){
-        mMap.clear();
-        rad=(TextView)findViewById(R.id.rad);
-        mMap.setOnMarkerClickListener(this);
-        addmarker();
-        getLocationPermission();
+        if (i != 0) {
+            Intent intent1 = getIntent();
+            finish();
+            startActivity(intent1);
+        }
+        ++i;
+        Log.i("abc", "222222222222   " + i);
+        if (mMap != null) {
+            mMap.clear();
+            rad = (TextView) findViewById(R.id.rad);
+            mMap.setOnMarkerClickListener(this);
+            addmarker();
+            getLocationPermission();
 
-        // Turn on the My Location layer and the related control on the map.
-        updateLocationUI();
-        // Get the current location of the device and set the position of the map.
-        getDeviceLocation();}
+            // Turn on the My Location layer and the related control on the map.
+            updateLocationUI();
+            // Get the current location of the device and set the position of the map.
+            getDeviceLocation();
+        }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         detachDatabaseReadListener();
 //        binsList.clear();
-        Log.i("abc","111111111111");
-        if(ha!=null)
-        ha.removeCallbacks(AccountActivity.runnable);
+        Log.i("abc", "111111111111");
+        if (ha != null)
+            ha.removeCallbacks(AccountActivity.runnable);
 
     }
 
-    public void ongps()
-    {
-        LocationManager locationManager ;
-        boolean GpsStatus ;
-        locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+    public void ongps() {
+        LocationManager locationManager;
+        boolean GpsStatus;
+        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        if(!GpsStatus){
+        if (!GpsStatus) {
             Toast.makeText(AccountActivity.this, "switch on location services to proceed", Toast.LENGTH_SHORT).show();
             Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent1);
 
         }
-        if(!GpsStatus){
+        if (!GpsStatus) {
             System.exit(1);
         }
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        save=savedInstanceState;
+        save = savedInstanceState;
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
@@ -185,37 +173,36 @@ public class AccountActivity extends AppCompatActivity
         Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
         mTitle.setTypeface(lobster);
 
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        ha=new Handler();
-        runnable=new Runnable() {
+        ha = new Handler();
+        runnable = new Runnable() {
             @Override
             public void run() {
                 //call function
                 addmarker();
-                if(mMap!=null)
+                if (mMap != null)
                     getDeviceLocation();
                 ha.postDelayed(this, 2000);
-                if(M!=null){
+                if (M != null) {
                     origin = new LatLng(mLastKnownLocation.getLatitude(),
                             mLastKnownLocation.getLongitude());
-                    LatLng dest =M.getPosition();
+                    LatLng dest = M.getPosition();
                     M.showInfoWindow();
                     // Getting URL to the Google Directions API
-                    String url =getUrl(origin,dest);
+                    String url = getUrl(origin, dest);
                     Log.d("onMapClick", url.toString());
                     FetchUrl FetchUrl = new FetchUrl();
                     // Start downloading json data from Google Directions API
                     FetchUrl.execute(url);
-                    if(distance(origin.latitude, origin.longitude, dest.latitude, dest.longitude)<10 && M.getTag()!=null )
-                    {
+                    if (distance(origin.latitude, origin.longitude, dest.latitude, dest.longitude) < 10 && M.getTag() != null) {
 //                        flag++;
 //                        prevBin=(BinInfo)M.getTag();
-                        BinInfo bin=(BinInfo) M.getTag();
-                        Intent i=new Intent(AccountActivity.this,RateBinActivity.class);
-                        i.putExtra("Bin",bin);
+                        BinInfo bin = (BinInfo) M.getTag();
+                        Intent i = new Intent(AccountActivity.this, RateBinActivity.class);
+                        i.putExtra("Bin", bin);
                         startActivity(i);
 
                     }
@@ -227,8 +214,8 @@ public class AccountActivity extends AppCompatActivity
         binsList = new ArrayList<>();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase= FirebaseDatabase.getInstance();
-        mDatabaseReference=mFirebaseDatabase.getReference().child("bins");
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference().child("bins");
 
         final FloatingActionButton fabOptions = (FloatingActionButton) findViewById(R.id.fab_options);
         FloatingActionButton fabSignOut = (FloatingActionButton) findViewById(R.id.fab_sign_out);
@@ -236,17 +223,17 @@ public class AccountActivity extends AppCompatActivity
         FloatingActionButton fabRecenter = (FloatingActionButton) findViewById(R.id.fab_recenter);
 
 
-        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_button);
-        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_button);
-        final Animation mShowLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.show_layout);
-        final Animation mHideLayout = AnimationUtils.loadAnimation(AccountActivity.this,R.anim.hide_layout);
-        final LinearLayout signOutParent = (LinearLayout)findViewById(R.id.sign_out_parent);
-        final LinearLayout getBinsParent = (LinearLayout)findViewById(R.id.add_bin_parent);
-        final LinearLayout recenterParent = (LinearLayout)findViewById(R.id.recenter_parent);
+        final Animation mShowButton = AnimationUtils.loadAnimation(AccountActivity.this, R.anim.show_button);
+        final Animation mHideButton = AnimationUtils.loadAnimation(AccountActivity.this, R.anim.hide_button);
+        final Animation mShowLayout = AnimationUtils.loadAnimation(AccountActivity.this, R.anim.show_layout);
+        final Animation mHideLayout = AnimationUtils.loadAnimation(AccountActivity.this, R.anim.hide_layout);
+        final LinearLayout signOutParent = (LinearLayout) findViewById(R.id.sign_out_parent);
+        final LinearLayout getBinsParent = (LinearLayout) findViewById(R.id.add_bin_parent);
+        final LinearLayout recenterParent = (LinearLayout) findViewById(R.id.recenter_parent);
         fabOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(signOutParent.getVisibility()==View.VISIBLE && getBinsParent.getVisibility()==View.VISIBLE){
+                if (signOutParent.getVisibility() == View.VISIBLE && getBinsParent.getVisibility() == View.VISIBLE) {
                     signOutParent.setVisibility(View.GONE);
                     getBinsParent.setVisibility(View.GONE);
                     recenterParent.setVisibility(View.GONE);
@@ -255,7 +242,7 @@ public class AccountActivity extends AppCompatActivity
                     getBinsParent.startAnimation(mHideLayout);
                     fabOptions.setImageResource(R.drawable.ic_list);
                     fabOptions.startAnimation(mHideButton);
-                }else{
+                } else {
                     signOutParent.setVisibility(View.VISIBLE);
                     getBinsParent.setVisibility(View.VISIBLE);
                     recenterParent.setVisibility(View.VISIBLE);
@@ -291,10 +278,10 @@ public class AccountActivity extends AppCompatActivity
 //                }else{
 //                    Toast.makeText(AccountActivity.this, "Mar gayii apnii toh", Toast.LENGTH_SHORT).show();
 //                }
-                Log.i("AccountActivity",binsList.size()+" FOCUS AT THIS");
-                Intent i=new Intent(AccountActivity.this, AddBinActivity.class);
-                i.putExtra("lat",Double.toString(mLastKnownLocation.getLatitude()));
-                i.putExtra("long",Double.toString(mLastKnownLocation.getLongitude()));
+                Log.i("AccountActivity", binsList.size() + " FOCUS AT THIS");
+                Intent i = new Intent(AccountActivity.this, AddBinActivity.class);
+                i.putExtra("lat", Double.toString(mLastKnownLocation.getLatitude()));
+                i.putExtra("long", Double.toString(mLastKnownLocation.getLongitude()));
                 startActivity(i);
 
             }
@@ -391,10 +378,10 @@ public class AccountActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_signout) {
             signOut();
-        } else if(id==R.id.nav_feedback){
-            startActivity(new Intent(AccountActivity.this,FeedbackActivity.class));
-        }else if(id==R.id.nav_bug_report){
-            startActivity(new Intent(AccountActivity.this,BugReportActivity.class));
+        } else if (id == R.id.nav_feedback) {
+            startActivity(new Intent(AccountActivity.this, FeedbackActivity.class));
+        } else if (id == R.id.nav_bug_report) {
+            startActivity(new Intent(AccountActivity.this, BugReportActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -402,48 +389,45 @@ public class AccountActivity extends AppCompatActivity
         return true;
     }
 
-    private void signOut(){
+    private void signOut() {
         mFirebaseAuth.signOut();
         LoginManager.getInstance().logOut();
-        if(mFirebaseAuth.getCurrentUser()!=null) {
+        if (mFirebaseAuth.getCurrentUser() != null) {
             Toast.makeText(this, "User" + mFirebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
         }
-        startActivity(new Intent(AccountActivity.this,AppDescriptionActivity.class));
+        startActivity(new Intent(AccountActivity.this, AppDescriptionActivity.class));
     }
 
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        if(mCircle!=null)
-        {
+        if (mCircle != null) {
             mCircle.remove();
         }
         makecircle();
     }
 
-    public void makecircle()
-    {
-        if(mCircle!=null)
+    public void makecircle() {
+        if (mCircle != null)
             mCircle.remove();
         LatLng origin = new LatLng(mLastKnownLocation.getLatitude(),
                 mLastKnownLocation.getLongitude());
-        double radiusInMeters = seekBar.getProgress()+100;
+        double radiusInMeters = seekBar.getProgress() + 100;
         //outline
-        rad.setText((""+(int)(radiusInMeters)));
+        rad.setText(("" + (int) (radiusInMeters)));
         int strokeColor = 0x7f18D300;
         try {
-            CircleOptions circleOptions = new CircleOptions().center(origin).radius(radiusInMeters).fillColor(Color.argb(0x2f,0x8C,0xEB,0x50)).strokeColor(strokeColor).strokeWidth(2);
+            CircleOptions circleOptions = new CircleOptions().center(origin).radius(radiusInMeters).fillColor(Color.argb(0x2f, 0x8C, 0xEB, 0x50)).strokeColor(strokeColor).strokeWidth(2);
             mCircle = mMap.addCircle(circleOptions);
+        } catch (Exception e) {
         }
-        catch (Exception e){}
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        if(mCircle!=null)
-        {
+        if (mCircle != null) {
             mCircle.remove();
         }
         makecircle();
@@ -456,7 +440,7 @@ public class AccountActivity extends AppCompatActivity
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        M=marker;
+        M = marker;
 
         origin = new LatLng(mLastKnownLocation.getLatitude(),
                 mLastKnownLocation.getLongitude());
@@ -465,47 +449,45 @@ public class AccountActivity extends AppCompatActivity
         return false;
     }
 
-    public void addmarker()
-    {
+    public void addmarker() {
         // Add a marker in roorkee
         // and move the map's camera to the same location.
         setcurrentmarker();
-        double lat,lang,dist;
-        Log.i("AccountActivity","sjhfasvgfhvasfjhbasjhb////////////");
-        for(int i=0;i<binsList.size();i++){
-            lat=Double.parseDouble(binsList.get(i).getLatitude());
-            lang=Double.parseDouble(binsList.get(i).getLongitude());
-            Log.i("Daaaaaaataaaaa",lat+"     "+lang);
+        double lat, lang, dist;
+        Log.i("AccountActivity", "sjhfasvgfhvasfjhbasjhb////////////");
+        for (int i = 0; i < binsList.size(); i++) {
+            lat = Double.parseDouble(binsList.get(i).getLatitude());
+            lang = Double.parseDouble(binsList.get(i).getLongitude());
+            Log.i("Daaaaaaataaaaa", lat + "     " + lang);
             Location targetLocation = new Location("");//provider name is unnecessary
             targetLocation.setLatitude(lat);//your coords of course
             targetLocation.setLongitude(lang);
-            dist= mLastKnownLocation.distanceTo(targetLocation);
-            Log.i("AccountActivity",dist+"    "+rad.getText().toString());
-            if(dist<Double.parseDouble(rad.getText().toString())){
-                Log.i("AccountActivity",dist+"    "+rad.getText().toString());
-                LatLng loc = new LatLng(lat,lang);
-                Marker y=mMap.addMarker(new MarkerOptions().position(loc)
-                        .title("upvote : "+binsList.get(i).getUpVotes()+" downvote : "+binsList.get(i).getDownVotes()+" "+binsList.get(i).getIsVerified()));
+            dist = mLastKnownLocation.distanceTo(targetLocation);
+            Log.i("AccountActivity", dist + "    " + rad.getText().toString());
+            if (dist < Double.parseDouble(rad.getText().toString())) {
+                Log.i("AccountActivity", dist + "    " + rad.getText().toString());
+                LatLng loc = new LatLng(lat, lang);
+                Marker y = mMap.addMarker(new MarkerOptions().position(loc)
+                        .title("upvote : " + binsList.get(i).getUpVotes() + " downvote : " + binsList.get(i).getDownVotes() + " " + binsList.get(i).getIsVerified()));
                 y.setTag(binsList.get(i));
             }
         }
     }
 
-    public void setcurrentmarker()
-    {
-        if(m!=null)
+    public void setcurrentmarker() {
+        if (m != null)
             m.remove();
         try {
-            m=mMap.addMarker(new MarkerOptions().position(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()))
-                    .title("My Position").icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.mypos))));
+            m = mMap.addMarker(new MarkerOptions().position(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()))
+                    .title("My Position").icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mypos))));
+        } catch (Exception e) {
         }
-        catch(Exception e){}
     }
 
     @Override
     public void onPolylineClick(Polyline polyline) {
-        LatLng a=M.getPosition();
-        Uri gmmIntentUri = Uri.parse("google.navigation:q="+a.latitude+","+a.longitude+"&mode=w");
+        LatLng a = M.getPosition();
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + a.latitude + "," + a.longitude + "&mode=w");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
@@ -514,7 +496,7 @@ public class AccountActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        rad=(TextView)findViewById(R.id.rad);
+        rad = (TextView) findViewById(R.id.rad);
         mMap.setOnMarkerClickListener(this);
         addmarker();
         getLocationPermission();
@@ -559,7 +541,7 @@ public class AccountActivity extends AppCompatActivity
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -582,12 +564,16 @@ public class AccountActivity extends AppCompatActivity
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = task.getResult();
                             mMap.setMyLocationEnabled(false);
-                            if(mCircle==null){
-                                try{
-                                origin =new LatLng(mLastKnownLocation.getLatitude(),
-                                        mLastKnownLocation.getLongitude());}catch (Exception e){ongps();}
+                            if (mCircle == null) {
+                                try {
+                                    origin = new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude());
+                                } catch (Exception e) {
+                                    ongps();
+                                }
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        origin, DEFAULT_ZOOM));}
+                                        origin, DEFAULT_ZOOM));
+                            }
                             makecircle();
                             setcurrentmarker();
                         } else {
@@ -600,7 +586,7 @@ public class AccountActivity extends AppCompatActivity
                     }
                 });
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -628,37 +614,6 @@ public class AccountActivity extends AppCompatActivity
 
 
         return url;
-    }
-
-    // Fetches data from url passed
-    private class FetchUrl extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-
-            // For storing data from web service
-            String data = "";
-
-            try {
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute (String result)   {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-            // Invokes the thread for parsing the JSON data
-            parserTask.execute(result);
-
-        }
     }
 
     private String downloadUrl(String strUrl) throws IOException {
@@ -699,6 +654,122 @@ public class AccountActivity extends AppCompatActivity
         return data;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                }
+            }
+        }
+        updateLocationUI();
+    }
+
+    public void recenter() {
+        mMap.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(origin, DEFAULT_ZOOM));
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist * 1000);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+    public void attachDatabaseReadListener() {
+        if (mChildEventListener == null) {
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    BinInfo bin = dataSnapshot.getValue(BinInfo.class);
+                    if (!binsList.contains(bin)) {
+                        binsList.add(bin);
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    BinInfo bin = dataSnapshot.getValue(BinInfo.class);
+                    if (!binsList.contains(bin)) {
+                        binsList.add(bin);
+                    }
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            };
+            mDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+    }
+
+    public void detachDatabaseReadListener() {
+        if (mChildEventListener != null) {
+            mDatabaseReference.removeEventListener(mChildEventListener);
+            mChildEventListener = null;
+        }
+    }
+
+    // Fetches data from url passed
+    private class FetchUrl extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+
+            // For storing data from web service
+            String data = "";
+
+            try {
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+                Log.d("Background Task data", data.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
+
+        }
+    }
+
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
         // Parsing the data in non-ui thread
@@ -724,6 +795,56 @@ public class AccountActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             return routes;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points;
+            if (polyline != null) {
+                polyline.remove();
+            }
+            lineOptions = null;
+            // Traversing through all the routes
+            try {
+                for (int i = 0; i < result.size(); i++) {
+                    points = new ArrayList<>();
+                    lineOptions = new PolylineOptions();
+
+                    // Fetching i-th route
+                    List<HashMap<String, String>> path = result.get(i);
+
+                    // Fetching all the points in i-th route
+                    for (int j = 0; j < path.size(); j++) {
+                        HashMap<String, String> point;
+                        point = path.get(j);
+
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lng = Double.parseDouble(point.get("lng"));
+                        LatLng position = new LatLng(lat, lng);
+
+                        points.add(position);
+                    }
+
+                    // Adding all the points in the route to LineOptions
+                    lineOptions.addAll(points);
+                    lineOptions.width(15);
+                    lineOptions.color(Color.argb(0x7f, 0x18, 0xD3, 0x22));
+                    Log.d("onPostExecute", "onPostExecute lineoptions decoded");
+                }
+
+
+                // Drawing polyline in the Google Map for the i-th route
+                if (lineOptions != null) {
+                    polyline = mMap.addPolyline(lineOptions);
+                    M.showInfoWindow();
+                    polyline.setClickable(true);
+                    mMap.setOnPolylineClickListener(obj);
+                } else {
+                    Log.d("onPostExecute", "without Polylines drawn");
+                }
+            } catch (Exception e) {
+            }
         }
 
         public class DataParser {
@@ -816,143 +937,6 @@ public class AccountActivity extends AppCompatActivity
 
                 return poly;
             }
-        }
-
-        // Executes in UI thread, after the parsing process
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList<LatLng> points;
-            if(polyline!=null)
-            {
-                polyline.remove();
-            }
-            lineOptions = null;
-            // Traversing through all the routes
-            try{
-                for (int i = 0; i < result.size(); i++) {
-                    points = new ArrayList<>();
-                    lineOptions = new PolylineOptions();
-
-                    // Fetching i-th route
-                    List<HashMap<String, String>> path = result.get(i);
-
-                    // Fetching all the points in i-th route
-                    for (int j = 0; j < path.size(); j++) {
-                        HashMap<String, String> point;
-                        point = path.get(j);
-
-                        double lat = Double.parseDouble(point.get("lat"));
-                        double lng = Double.parseDouble(point.get("lng"));
-                        LatLng position = new LatLng(lat, lng);
-
-                        points.add(position);
-                    }
-
-                    // Adding all the points in the route to LineOptions
-                    lineOptions.addAll(points);
-                    lineOptions.width(15);
-                    lineOptions.color(Color.argb(0x7f, 0x18, 0xD3, 0x22));
-                    Log.d("onPostExecute", "onPostExecute lineoptions decoded");
-                }
-
-
-
-                // Drawing polyline in the Google Map for the i-th route
-                if(lineOptions != null) {
-                    polyline=mMap.addPolyline(lineOptions);
-                    M.showInfoWindow();
-                    polyline.setClickable(true);
-                    mMap.setOnPolylineClickListener(obj);
-                }
-                else {
-                    Log.d("onPostExecute","without Polylines drawn");
-                }}catch(Exception e){}
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
-        updateLocationUI();
-    }
-
-    public void recenter()
-    {
-        mMap.moveCamera(CameraUpdateFactory
-                .newLatLngZoom(origin, DEFAULT_ZOOM));
-    }
-
-    private double distance(double lat1, double lon1, double lat2, double lon2) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return (dist*1000);
-    }
-
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
-    }
-
-    public void attachDatabaseReadListener(){
-        if(mChildEventListener==null) {
-            mChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    BinInfo bin = dataSnapshot.getValue(BinInfo.class);
-                    if (!binsList.contains(bin)){
-                        binsList.add(bin);
-                    }
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    BinInfo bin = dataSnapshot.getValue(BinInfo.class);
-                    if (!binsList.contains(bin)){
-                        binsList.add(bin);
-                    }
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            };
-            mDatabaseReference.addChildEventListener(mChildEventListener);
-        }
-    }
-
-    public void detachDatabaseReadListener(){
-        if(mChildEventListener!=null) {
-            mDatabaseReference.removeEventListener(mChildEventListener);
-            mChildEventListener=null;
         }
     }
 

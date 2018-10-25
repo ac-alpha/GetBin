@@ -29,7 +29,7 @@ public class OneFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_one, container, false);
 
         Typeface lobster = Typeface.createFromAsset(getContext().getAssets(), "fonts/lobster.otf");
-        TextView tv=(TextView)rootView.findViewById(R.id.ftv1);
+        TextView tv = (TextView) rootView.findViewById(R.id.ftv1);
         tv.setTypeface(lobster);
 
         return rootView;

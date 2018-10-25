@@ -2,10 +2,10 @@ package com.example.ashutoshchaubey.getbin;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -47,20 +47,20 @@ public class SignInActivity extends AppCompatActivity {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
         mTitle.setTypeface(lobster);
 
-        mProgressBar=(ProgressBar)findViewById(R.id.progress_bar_signin);
-        mEmailField=(EditText) findViewById(R.id.edit_text_email_id_sign_in);
-        mPasswordField=(EditText) findViewById(R.id.edit_text_password_sign_in);
-        mPasswordConfirmationField=(EditText) findViewById(R.id.edit_text_cnfrm_password_sign_in);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_signin);
+        mEmailField = (EditText) findViewById(R.id.edit_text_email_id_sign_in);
+        mPasswordField = (EditText) findViewById(R.id.edit_text_password_sign_in);
+        mPasswordConfirmationField = (EditText) findViewById(R.id.edit_text_cnfrm_password_sign_in);
 
         mProgressBar.setVisibility(View.INVISIBLE);
 
         //finding the button for login
-        mSigninButton=(Button) findViewById(R.id.button_sign_in);
+        mSigninButton = (Button) findViewById(R.id.button_sign_in);
 
         //reating an instance of the firebaseauth type
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -74,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         //creating an authStateListener
-        mAuthStateListener = new FirebaseAuth.AuthStateListener(){
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
 
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -86,12 +86,12 @@ public class SignInActivity extends AppCompatActivity {
                     String name = user.getDisplayName();
                     String email = user.getEmail();
 
-                    Toast.makeText(SignInActivity.this, name+" "+email, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, name + " " + email, Toast.LENGTH_SHORT).show();
 
                     // Check if user's email is verified
                     boolean emailVerified = user.isEmailVerified();
 
-                    startActivity(new Intent(SignInActivity.this,AccountActivity.class));
+                    startActivity(new Intent(SignInActivity.this, AccountActivity.class));
 
                     // The user's ID, unique to the Firebase project. Do NOT use this value to
                     // authenticate with your backend server, if you have one. Use
@@ -104,18 +104,17 @@ public class SignInActivity extends AppCompatActivity {
         };
 
 
-
     }
 
 
-    private void startSignIn(){
+    private void startSignIn() {
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
         String cnfrmPassword = mPasswordConfirmationField.getText().toString();
-        if(!(TextUtils.isEmpty(email)||TextUtils.isEmpty(password)||TextUtils.isEmpty(cnfrmPassword))) {
-            if(!password.equals(cnfrmPassword)){
+        if (!(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(cnfrmPassword))) {
+            if (!password.equals(cnfrmPassword)) {
                 Toast.makeText(SignInActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -136,7 +135,7 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         });
             }
-        }else{
+        } else {
             Toast.makeText(SignInActivity.this, "TextFields are empty", Toast.LENGTH_SHORT).show();
         }
     }

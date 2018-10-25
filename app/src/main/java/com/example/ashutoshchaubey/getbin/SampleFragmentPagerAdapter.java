@@ -3,6 +3,7 @@ package com.example.ashutoshchaubey.getbin;
 /**
  * Created by ashutoshchaubey on 09/03/18.
  */
+
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,19 +20,19 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
 
         super(fm);
-        this.context=context;
+        this.context = context;
 
     }
 
     @Override
     public Fragment getItem(int position) {
-        if(position==0){
+        if (position == 0) {
             return new OneOneFragment();
-        }else if(position==1) {
+        } else if (position == 1) {
             return new OneFragment();
-        }else if(position==2){
+        } else if (position == 2) {
             return new ThreeFragment();
-        }else{
+        } else {
             return new TwoFragment();
         }
     }

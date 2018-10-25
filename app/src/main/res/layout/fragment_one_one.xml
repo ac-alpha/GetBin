@@ -6,34 +6,33 @@
 
     <!-- TODO: Update blank fragment layout -->
     <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@string/hello_blank_fragment" />-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:text="@string/hello_blank_fragment" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_margin="4dp"
+            android:layout_weight="1"
             android:src="@drawable/oneonesc" />
 
         <TextView
             android:id="@+id/ftv11"
             android:layout_width="match_parent"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
-            android:text="Find the bins near your location from your smartphone..."
+            android:gravity="center_horizontal"
             android:padding="4dp"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"/>
+            android:text="Find the bins near your location from your smartphone..."
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </FrameLayout>

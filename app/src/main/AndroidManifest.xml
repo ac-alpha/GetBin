@@ -18,7 +18,9 @@
             android:name=".AccountActivity"
             android:label="@string/title_activity_account"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignInActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".SignInActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -69,8 +71,7 @@
             android:name=".ProfileActivity"
             android:label="User Profile"
             android:parentActivityName=".AccountActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".JunkActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -80,7 +81,9 @@
         <activity
             android:name=".FeedbackActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BugReportActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".BugReportActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

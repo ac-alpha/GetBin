@@ -1,37 +1,36 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- TODO: Update blank fragment layout -->
     <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@string/hello_blank_fragment"-->
-        <!--android:textColor="@android:color/black"/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:text="@string/hello_blank_fragment"-->
+    <!--android:textColor="@android:color/black"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_margin="4dp"
+            android:layout_weight="1"
             android:src="@drawable/onesc" />
 
         <TextView
             android:id="@+id/ftv1"
             android:layout_width="match_parent"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
-            android:text="Add the bins around you to help others..."
+            android:gravity="center_horizontal"
             android:padding="4dp"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"/>
+            android:text="Add the bins around you to help others..."
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </FrameLayout>
