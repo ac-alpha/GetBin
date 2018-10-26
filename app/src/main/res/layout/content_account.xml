@@ -10,18 +10,17 @@
 
 
     <!--<TextView-->
-        <!--android:id="@+id/textView2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginStart="18dp"-->
-        <!--android:layout_marginTop="16dp"-->
-        <!--android:text="Hello World!!"-->
-        <!--android:textSize="30sp" />-->
+    <!--android:id="@+id/textView2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginStart="18dp"-->
+    <!--android:layout_marginTop="16dp"-->
+    <!--android:text="Hello World!!"-->
+    <!--android:textSize="30sp" />-->
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -59,53 +58,53 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_options"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_above="@+id/linearLayout"
-    android:layout_marginBottom="4dp"
-    android:layout_marginEnd="16dp"
-    android:layout_alignParentRight="true"
-    android:clickable="true"
-    app:srcCompat="@drawable/ic_list" />
+        android:id="@+id/fab_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_list" />
 
     <LinearLayout
-    android:id="@+id/linearLayout2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_above="@id/fab_options"
-    android:layout_alignParentEnd="true"
-    android:layout_marginBottom="12dp"
-    android:layout_marginEnd="12dp"
-    android:gravity="right"
-    android:orientation="vertical">
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fab_options"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="right"
+        android:orientation="vertical">
 
-    <LinearLayout
-    android:id="@+id/recenter_parent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/recenter_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
-    <TextView
-    style="@android:style/TextAppearance.StatusBar.Title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Re-Center"
-    android:textSize="20sp" />
+            <TextView
+                style="@android:style/TextAppearance.StatusBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Re-Center"
+                android:textSize="20sp" />
 
-    <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_recenter"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="4dp"
-    android:focusable="true"
-    app:backgroundTint="@color/colorPrimary"
-    app:srcCompat="@drawable/ic_recenter" />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_recenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="4dp"
+                android:focusable="true"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_recenter" />
 
-    </LinearLayout>
-    <!--<android.support.design.widget.FloatingActionButton-->
+        </LinearLayout>
+        <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/fab_recenter"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -117,7 +116,7 @@
         <!--app:backgroundTint="@color/colorPrimary"-->
         <!--app:srcCompat="@drawable/ic_recenter" />-->
 
-    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/fab_add_bin"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -129,57 +128,57 @@
         <!--app:backgroundTint="@color/colorPrimary"-->
         <!--app:srcCompat="@drawable/ic_add_location" />-->
 
-    <LinearLayout
-    android:id="@+id/add_bin_parent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:visibility="gone"   >
+        <LinearLayout
+            android:id="@+id/add_bin_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
-    <TextView
-    style="@android:style/TextAppearance.StatusBar.Title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Add Bin"
-    android:textSize="20sp" />
+            <TextView
+                style="@android:style/TextAppearance.StatusBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Bin"
+                android:textSize="20sp" />
 
-    <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_add_bin"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="4dp"
-    android:focusable="true"
-    app:backgroundTint="@color/colorPrimary"
-    app:srcCompat="@drawable/ic_location_searching" />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_add_bin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="4dp"
+                android:focusable="true"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_location_searching" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-    android:id="@+id/sign_out_parent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/sign_out_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
-    <TextView
-    style="@android:style/TextAppearance.StatusBar.Title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Sign Out"
-    android:textSize="20sp" />
+            <TextView
+                style="@android:style/TextAppearance.StatusBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Out"
+                android:textSize="20sp" />
 
-    <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_sign_out"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="4dp"
-    android:focusable="true"
-    app:backgroundTint="@color/colorPrimary"
-    app:srcCompat="@drawable/ic_signout" />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_sign_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="4dp"
+                android:focusable="true"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_signout" />
 
-    </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

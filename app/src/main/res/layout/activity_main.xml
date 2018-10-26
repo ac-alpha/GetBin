@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grad_background"
@@ -12,14 +11,14 @@
         android:id="@+id/swipe_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/progress_bar_login"
+        android:layout_alignParentTop="true"
         android:src="@drawable/ic_arrow_up" />
 
     <TextView
-        android:layout_below="@id/swipe_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/swipe_up"
         android:layout_centerHorizontal="true"
         android:text="Swipe up to login"
         android:textColor="@android:color/white"
@@ -41,19 +40,19 @@
         android:id="@+id/edit_text_password_log_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/edit_text_email_id_log_in"
         android:layout_below="@+id/edit_text_email_id_log_in"
+        android:layout_alignStart="@+id/edit_text_email_id_log_in"
         android:ems="10"
         android:hint="Enter your password"
         android:inputType="textPassword" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_text_password_log_in"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayout">
+        android:orientation="horizontal">
 
 
         <Button
@@ -81,8 +80,8 @@
         android:id="@+id/facebook_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/linearLayout"
         android:layout_below="@+id/google_sign_in_button"
+        android:layout_alignStart="@+id/linearLayout"
         android:layout_gravity="center_horizontal" />
 
     <ProgressBar

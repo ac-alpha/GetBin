@@ -20,19 +20,20 @@ public class BinInfo implements Serializable {
     public ArrayList<String> downVotedUsers;
     public String uploader;
 
-    public BinInfo(){}
+    public BinInfo() {
+    }
 
-    public BinInfo(String uploader, String binId,String latitude,String longitude, String imageUrl, String upVotes, String downVotes, String isVerified, ArrayList<String> upVotedUsers, ArrayList<String> downVotedUsers){
-        this.binId=binId;
-        this.imageUrl=imageUrl;
-        this.latitude=latitude;
-        this.upVotes=upVotes;
-        this.downVotes=downVotes;
-        this.longitude=longitude;
-        this.isVerified=isVerified;
-        this.downVotedUsers=downVotedUsers;
-        this.upVotedUsers=upVotedUsers;
-        this.uploader=uploader;
+    public BinInfo(String uploader, String binId, String latitude, String longitude, String imageUrl, String upVotes, String downVotes, String isVerified, ArrayList<String> upVotedUsers, ArrayList<String> downVotedUsers) {
+        this.binId = binId;
+        this.imageUrl = imageUrl;
+        this.latitude = latitude;
+        this.upVotes = upVotes;
+        this.downVotes = downVotes;
+        this.longitude = longitude;
+        this.isVerified = isVerified;
+        this.downVotedUsers = downVotedUsers;
+        this.upVotedUsers = upVotedUsers;
+        this.uploader = uploader;
 
     }
 
@@ -40,49 +41,52 @@ public class BinInfo implements Serializable {
         return binId;
     }
 
+    public void setBinId(String binId) {
+        this.binId = binId;
+    }
+
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
 
-    public void setIsVerified(String isVerified) {
-        this.isVerified = isVerified;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getIsVerified() {
         return isVerified;
     }
 
+    public void setIsVerified(String isVerified) {
+        this.isVerified = isVerified;
+    }
+
     public String getDownVotes() {
         return downVotes;
     }
 
-    public String getUpVotes() {
-        return upVotes;
-    }
-
     public void setDownVotes(String downVotes) {
         this.downVotes = downVotes;
+    }
+
+    public String getUpVotes() {
+        return upVotes;
     }
 
     public void setUpVotes(String upVotes) {
@@ -93,19 +97,15 @@ public class BinInfo implements Serializable {
         return downVotedUsers;
     }
 
-    public ArrayList<String> getUpVotedUsers() {
-        return upVotedUsers;
-    }
-
     public void setDownVotedUsers(ArrayList<String> downVotedUsers) {
         this.downVotedUsers = downVotedUsers;
     }
 
-    public void setUpVotedUsers(ArrayList<String> upVotedUsers) {
-        this.upVotedUsers = upVotedUsers;
+    public ArrayList<String> getUpVotedUsers() {
+        return upVotedUsers;
     }
 
-    public void setBinId(String binId) {
-        this.binId = binId;
+    public void setUpVotedUsers(ArrayList<String> upVotedUsers) {
+        this.upVotedUsers = upVotedUsers;
     }
 }

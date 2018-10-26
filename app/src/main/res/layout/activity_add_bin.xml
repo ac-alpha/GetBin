@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/grad_background"
+    android:orientation="vertical"
     tools:context="com.example.ashutoshchaubey.getbin.AddBinActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -38,11 +38,11 @@
         android:id="@+id/abatv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="25sp"
-        android:text="Add Bin"
+        android:layout_marginTop="@dimen/views_padding"
         android:gravity="center"
-        android:layout_marginTop="@dimen/views_padding"/>
+        android:text="Add Bin"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
 
 
     <LinearLayout
@@ -99,8 +99,8 @@
                 android:id="@+id/fab_all_fields_done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/fab_margin"
                 android:clickable="true"
                 app:srcCompat="@drawable/ic_done_all" />

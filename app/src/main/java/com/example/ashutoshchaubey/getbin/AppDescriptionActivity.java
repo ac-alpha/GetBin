@@ -5,13 +5,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -51,12 +51,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class AppDescriptionActivity extends AppCompatActivity {
 
+    public static final int RC_SIGN_IN = 1;
     private static final String TAG = "AppDescriptionActivity";
-
-    private SlidingUpPanelLayout mLayout;
-    ImageButton nextButton, prevButton;
-    static TextView skipToMain;
     public static int currentPage;
+    static TextView skipToMain;
+    ImageButton nextButton, prevButton;
     EditText mEmailField;
     EditText mPasswordField;
     Button mLoginButton;
@@ -66,7 +65,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     CallbackManager mCallbackManager;
     ProgressBar mProgressBar;
-    public static final int RC_SIGN_IN=1;
+    private SlidingUpPanelLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +75,13 @@ public class AppDescriptionActivity extends AppCompatActivity {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        TextView textView=(TextView)findViewById(R.id.adatv1);
+        TextView textView = (TextView) findViewById(R.id.adatv1);
         Typeface lobster = Typeface.createFromAsset(getApplication().getAssets(), "fonts/lobster.otf");
         textView.setTypeface(lobster);
 
-        TextView tvacb=(TextView)findViewById(R.id.swipe_up_text);
+        TextView tvacb = (TextView) findViewById(R.id.swipe_up_text);
         tvacb.setTypeface(lobster);
 
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -108,7 +107,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.visions_viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
-        SampleFragmentPagerAdapter adapter = new SampleFragmentPagerAdapter(getSupportFragmentManager(),AppDescriptionActivity.this);
+        SampleFragmentPagerAdapter adapter = new SampleFragmentPagerAdapter(getSupportFragmentManager(), AppDescriptionActivity.this);
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
@@ -119,22 +118,22 @@ public class AppDescriptionActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        nextButton =(ImageButton)findViewById(R.id.next_pager);
-        prevButton=(ImageButton)findViewById(R.id.prev_pager);
-        skipToMain=(TextView)findViewById(R.id.skip_tour);
+        nextButton = (ImageButton) findViewById(R.id.next_pager);
+        prevButton = (ImageButton) findViewById(R.id.prev_pager);
+        skipToMain = (TextView) findViewById(R.id.skip_tour);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentPage=viewPager.getCurrentItem();
-                viewPager.setCurrentItem(currentPage+1);
+                currentPage = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(currentPage + 1);
             }
         });
 
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentPage=viewPager.getCurrentItem();
-                viewPager.setCurrentItem(currentPage-1);
+                currentPage = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(currentPage - 1);
             }
         });
 
@@ -145,18 +144,18 @@ public class AppDescriptionActivity extends AppCompatActivity {
             }
         });
 
-        mProgressBar=(ProgressBar)findViewById(R.id.progress_bar_login);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_login);
         mProgressBar.setVisibility(View.INVISIBLE);
 
         //finding the edit text views
-        mEmailField=(EditText) findViewById(R.id.edit_text_email_id_log_in);
-        mPasswordField=(EditText) findViewById(R.id.edit_text_password_log_in);
+        mEmailField = (EditText) findViewById(R.id.edit_text_email_id_log_in);
+        mPasswordField = (EditText) findViewById(R.id.edit_text_password_log_in);
 
         //finding the button for login
-        mLoginButton=(Button) findViewById(R.id.button_log_in);
+        mLoginButton = (Button) findViewById(R.id.button_log_in);
 
         //finding the button for registering
-        mRegisterButton=(Button)findViewById(R.id.button_register);
+        mRegisterButton = (Button) findViewById(R.id.button_register);
 
         //reating an instance of the firebaseauth type
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -181,7 +180,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AppDescriptionActivity.this,SignInActivity.class));
+                startActivity(new Intent(AppDescriptionActivity.this, SignInActivity.class));
             }
         });
 
@@ -193,7 +192,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //creating an authStateListener
-        mAuthStateListener = new FirebaseAuth.AuthStateListener(){
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
 
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -203,12 +202,12 @@ public class AppDescriptionActivity extends AppCompatActivity {
                     String name = user.getDisplayName();
                     String email = user.getEmail();
                     mProgressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(AppDescriptionActivity.this, name+" "+email, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppDescriptionActivity.this, name + " " + email, Toast.LENGTH_SHORT).show();
 
                     // Check if user's email is verified
                     boolean emailVerified = user.isEmailVerified();
 
-                    startActivity(new Intent(AppDescriptionActivity.this,AccountActivity.class));
+                    startActivity(new Intent(AppDescriptionActivity.this, AccountActivity.class));
 
                     // The user's ID, unique to the Firebase project. Do NOT use this value to
                     // authenticate with your backend server, if you have one. Use
@@ -270,12 +269,12 @@ public class AppDescriptionActivity extends AppCompatActivity {
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
-    private void startLogIn(){
+    private void startLogIn() {
 
 
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
-        if(!(TextUtils.isEmpty(email)||TextUtils.isEmpty(password))) {
+        if (!(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))) {
             mProgressBar.setVisibility(View.VISIBLE);
             mFirebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -296,7 +295,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
 
                         }
                     });
-        }else{
+        } else {
             Toast.makeText(AppDescriptionActivity.this, "TextFields are empty", Toast.LENGTH_SHORT).show();
         }
 
@@ -323,7 +322,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 Toast.makeText(this, "Sign In failed", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
 //            mProgressBar.setVisibility(View.INVISIBLE);
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
@@ -339,7 +338,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             mProgressBar.setVisibility(View.INVISIBLE);
-                            startActivity(new Intent(AppDescriptionActivity.this,AccountActivity.class));
+                            startActivity(new Intent(AppDescriptionActivity.this, AccountActivity.class));
                             Toast.makeText(AppDescriptionActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -360,7 +359,7 @@ public class AppDescriptionActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             mProgressBar.setVisibility(View.INVISIBLE);
-                            FirebaseUser user = mFirebaseAuth .getCurrentUser();
+                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(AppDescriptionActivity.this, "Authentication failed.",
@@ -377,9 +376,9 @@ public class AppDescriptionActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             Log.i("TourActivity", "page selected " + position);
             currentPage = position;
-            if(position==2){
+            if (position == 2) {
                 skipToMain.setText("Done");
-            }else{
+            } else {
                 skipToMain.setText("Skip");
             }
         }

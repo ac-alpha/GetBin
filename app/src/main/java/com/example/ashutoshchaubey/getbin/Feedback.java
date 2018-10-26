@@ -9,13 +9,13 @@ public class Feedback {
     public String feedback;
     public String activityName;
 
-    public Feedback(String feedback){
-        this.feedback=feedback;
+    public Feedback(String feedback) {
+        this.feedback = feedback;
     }
 
-    public Feedback(String feedback,String activityName){
-        this.feedback=feedback;
-        this.activityName=activityName;
+    public Feedback(String feedback, String activityName) {
+        this.feedback = feedback;
+        this.activityName = activityName;
     }
 
     public String getFeedback() {

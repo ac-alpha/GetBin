@@ -38,31 +38,31 @@
         android:id="@+id/feedback_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Feedback"
-        android:gravity="center"
         android:layout_margin="4dp"
+        android:gravity="center"
+        android:text="Feedback"
         android:textColor="@android:color/white"
-        android:textSize="25sp"/>
+        android:textSize="25sp" />
 
     <EditText
-        android:layout_margin="8dp"
-        android:padding="4dp"
-        android:background="@android:color/white"
         android:id="@+id/feedback_fb"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="8dp"
         android:layout_weight="1"
+        android:background="@android:color/white"
         android:gravity="top"
-        android:hint="Please enter your feedback here..." />
-    
+        android:hint="Please enter your feedback here..."
+        android:padding="4dp" />
+
     <Button
         android:id="@+id/submit_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:background="@drawable/mybutton"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/mybutton"
+        android:text="Submit" />
 
 </LinearLayout>
